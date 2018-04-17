@@ -76,6 +76,15 @@ where T: StartBehavior + StopBehavior + CallPlugin
     }
 }
 
+pub fn res_check<T>( res :&T) where T : Res
+{
+    let mut c = Context::new() ;
+    assert!(res.info(&mut c).is_ok()) ;
+    assert!(res.conf(&mut c).is_ok()) ;
+    assert!(res.start(&mut c).is_ok());
+    assert!(res.stop(&mut c).is_ok()) ;
+    assert!(res.clean(&mut c).is_ok()) ;
+}
 
 #[cfg(test)]
 mod tests
@@ -144,21 +153,12 @@ mod tests
 
         }
     }
-    fn resres_check<T>( res :&T) where T : Res
-    {
-        let mut c = Context::new() ;
-        assert!(res.info(&mut c).is_ok()) ;
-        assert!(res.conf(&mut c).is_ok()) ;
-        assert!(res.start(&mut c).is_ok());
-        assert!(res.stop(&mut c).is_ok()) ;
-        assert!(res.clean(&mut c).is_ok()) ;
-    }
     #[test]
     fn useres_stub()
     {
 
         pretty_env_logger::init();
         let res = StubRes::new();
-        resres_check(&res) ;
+        res_check(&res) ;
     }
 }
