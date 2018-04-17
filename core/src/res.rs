@@ -79,11 +79,11 @@ where T: StartBehavior + StopBehavior + CallPlugin
 pub fn res_check<T>( res :&T) where T : Res
 {
     let mut c = Context::new() ;
-    assert!(res.info(&mut c).is_ok()) ;
-    assert!(res.conf(&mut c).is_ok()) ;
-    assert!(res.start(&mut c).is_ok());
-    assert!(res.stop(&mut c).is_ok()) ;
-    assert!(res.clean(&mut c).is_ok()) ;
+    assert!(res.info(  &mut c).is_ok()) ;
+    assert!(res.conf(  &mut c).is_ok()) ;
+    assert!(res.start( &mut c).is_ok());
+    assert!(res.stop(  &mut c).is_ok()) ;
+    assert!(res.clean( &mut c).is_ok()) ;
 }
 
 #[cfg(test)]
