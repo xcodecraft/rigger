@@ -60,7 +60,9 @@ macro_rules! use_test {
 
 #[macro_use]
 mod err ;
+#[macro_use]
 mod def ;
 pub mod model ;
 mod res ;
+mod inner ;
 

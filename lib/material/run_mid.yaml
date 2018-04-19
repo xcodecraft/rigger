@@ -1,0 +1,53 @@
+_env:
+    - !R.env
+        _type : "env"
+        _name : "_dev"
+        _res  :
+            - !R.project
+                _type : "project"
+                name  : "rigger-ng"
+                root  : "${HOME}/devspace/rigger-ng"
+
+            - !R.include
+                _type : "include"
+                _path :
+                    - "${PRJ_ROOT}/_rg/modul.yaml"
+                    - "${PRJ_ROOT}/_rg/utls.yaml"
+
+    - !R.env
+        _type : "env"
+        _name : "online"
+        _res  :
+            - !R.project
+                _type : "project"
+                name  : "rigger-ng"
+                root  : "${HOME}/devspace/rigger-ng"
+
+    - !R.env
+        _type : "env"
+        _name : "dev"
+        _mix  : "_dev,ENV_A,ENV_B"
+
+_sys:
+    -  !R.system
+        _type : "system"
+        _name : "test"
+        _res  :
+            - !R.vars
+                  
+                  _type     : "vars"
+                  TEST_CASE : "${HOME}/devspace/rigger-ng/test/main.py"
+            - !R.echo
+                  _type : "echo"
+                  value : "${TEST_CASE}"
+
+    - !R.system
+        _type  : "system"
+        _name  : "init"
+        _limit : 
+            envs   : "online"
+            passwd : "xyz"
+        _res    :
+            - !R.echo
+                _type : "echo"
+                value : "limit is pass!"

@@ -1,6 +1,6 @@
-use std::collections::HashMap;
 use err ;
 use def::* ;
+use std::collections::HashMap ;
 pub struct Context
 {
 
@@ -35,10 +35,20 @@ pub trait Res
     fn info(&self  , context : &mut Context ) ->BoolR;
 }
 pub type ResBox = Box<Res> ;
+pub type ResVec = Vec<Box<Res>> ;
 
-type ResVec = Vec<Box<Res>> ;
-pub struct ResCollection
-{
-    resvec : ResVec,
+pub enum  RgvType{
+    Vars,
+    Env,
+    System,
+    Project,
+    //Modul,
+    Res,
 }
+
+pub trait Parser
+{
+    fn  next(&self) -> Option<(RgvType,StrMap)> ;
+}
+pub type ParserBox = Box<Parser> ;
 
