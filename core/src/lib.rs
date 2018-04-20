@@ -66,3 +66,9 @@ pub mod model ;
 mod res ;
 mod inner ;
 
+
+pub fn __main() {
+    assert!(false) ;
+    debug!("hello") ;
+}
+

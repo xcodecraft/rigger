@@ -41,6 +41,65 @@ mod proxy ;
 // impl InnerContainer for rgm::RGMain{}
 
 
+/*
+impl <T> StartBehavior for T where T: InnerContainer
+{
+    fn res_allow(&self,_context : &mut Context) ->BoolR 
+    {
+        Ok(())
+
+    }
+    fn res_start(&self,_context : &mut Context) ->BoolR 
+    {
+
+        let resvec = self.resvec_hold() ;
+        for res  in resvec 
+        {
+            res.start()? ;
+
+        }
+        Ok(())
+
+    }
+    fn res_conf(&self,_context : &mut Context) ->BoolR 
+    {
+        let resvec = self.resvec_hold() ;
+        for res  in resvec 
+        {
+            res.conf()? ;
+
+        }
+        Ok(())
+
+    }
+    fn res_info(&self) -> String
+    {
+        format!("env: {}",self.name)
+
+    }
+}
+impl <T> StopBehavior for T where T: InnerContainer
+{
+    fn res_stop(&self,_context : &mut Context) ->BoolR 
+    {
+        Ok(())
+
+    }
+    fn res_clean(&self,_context : &mut Context) ->BoolR 
+    {
+        Ok(())
+
+    }
+    fn res_check(&self,_context : &mut Context) ->BoolR 
+    {
+        Ok(())
+
+    }
+
+}
+*/
+
+
 trait Compose
 {
     fn build(&mut self,parser : &ParserBox) ;
@@ -56,12 +115,26 @@ impl <T> Compose for T  where T: InnerContainer
             let obj: ResBox = match v
             {
                 RgvType::Vars    => { Box::new(var::Vars::load(data) )    } ,
-                RgvType::Env     => { Box::new(env::Env::load(data)  )    } ,
-                RgvType::System  => { Box::new(sys::System::load(data) )  } ,
-                RgvType::Project => { Box::new(prj::Project::load(data))  } ,
+                RgvType::Env     => { 
+                    let mut obj = Box::new(env::Env::load(data)); 
+                                       obj.build(parser); 
+                                       obj   
+                } ,
+                RgvType::System  => { 
+                    let mut obj = Box::new(sys::System::load(data) ) ;
+                    obj.build(parser) ;
+                    obj 
+                } ,
+                RgvType::Project => { 
+                    let mut obj =  Box::new(prj::Project::load(data));  
+                    obj.build(parser) ;
+                    obj
+
+                } ,
                 RgvType::Res     => { Box::new(proxy::ResProxy::load(data)) } ,
 
             } ;
+            trace!("regist {}", obj.info() );
             //obj.build( parser);
             self.regist(obj);
         }

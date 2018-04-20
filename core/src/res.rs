@@ -18,7 +18,7 @@ pub trait StartBehavior
     fn res_allow(&self , context : &mut Context  ) ->BoolR;
     fn res_conf(&self  , context : &mut Context  ) ->BoolR;
     fn res_start(&self , context : &mut Context  ) ->BoolR;
-    fn res_info(&self  , context : &mut Context  ) ->BoolR;
+    fn res_info(&self) ->String;
 }
 
 impl<T> Res for T  
@@ -67,19 +67,15 @@ where T: StartBehavior + StopBehavior + CallPlugin
         Ok(())
 
     }
-    fn info(&self,context : &mut Context) ->BoolR 
+    fn info(&self) ->String
     {
-        self.res_before(context)? ;
-        self.res_info(context)? ;
-        self.res_after(context)? ;
-        Ok(())
+        self.res_info()
     }
 }
 
 pub fn res_check<T>( res :&T) where T : Res
 {
     let mut c = Context::new() ;
-    assert!(res.info(  &mut c).is_ok()) ;
     assert!(res.conf(  &mut c).is_ok()) ;
     assert!(res.start( &mut c).is_ok());
     assert!(res.stop(  &mut c).is_ok()) ;
@@ -114,9 +110,9 @@ mod tests
             Ok(())
 
         }
-        fn res_info(&self,_context : &mut Context) ->BoolR 
+        fn res_info(&self ) ->String
         {
-            Ok(())
+            format!("stub res")
 
         }
     }
@@ -157,7 +153,6 @@ mod tests
     fn useres_stub()
     {
 
-        pretty_env_logger::init();
         let res = StubRes::new();
         res_check(&res) ;
     }

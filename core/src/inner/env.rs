@@ -2,6 +2,8 @@
 use model::* ;
 use def::* ;
 use res::* ;
+use super::* ;
+#[derive(Debug)]
 pub struct Env
 {
     name   : String,
@@ -27,6 +29,13 @@ impl Env
     }
 
 }
+impl InnerContainer for Env {
+
+    fn resvec_hold<'a>(&'a mut self) ->&'a mut  ResVec 
+    {
+        &mut self.resvec
+    }
+}
 
 impl StartBehavior for Env
 {
@@ -45,9 +54,9 @@ impl StartBehavior for Env
         Ok(())
 
     }
-    fn res_info(&self,_context : &mut Context) ->BoolR 
+    fn res_info(&self) -> String
     {
-        Ok(())
+        format!("env: {}",self.name)
 
     }
 }

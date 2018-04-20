@@ -2,6 +2,7 @@
 use model::* ;
 use def::* ;
 use res::* ;
+#[derive(Debug)]
 pub struct Vars
 {
     kvmap  : StrMap  ,
@@ -31,9 +32,9 @@ impl Vars
             Ok(())
 
         }
-        fn res_info(&self,_context : &mut Context) ->BoolR 
+        fn res_info(&self) ->String
         {
-            Ok(())
+            format!("Vars: {:?}",self.kvmap)
 
         }
     }

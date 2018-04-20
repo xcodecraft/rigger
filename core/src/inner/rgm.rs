@@ -3,6 +3,7 @@ use model::* ;
 use def::* ;
 use res::* ;
 use super::* ;
+#[derive(Debug)]
 pub struct RGMain
 {
     resvec : ResVec ,
@@ -31,8 +32,7 @@ mod tests
     use super::* ;
     use model::Parser ;
     use std::cell::RefCell;
-
-
+    use pretty_env_logger ;
     type RgDataVec  = Vec<(RgvType, StrMap)> ;
     struct StubParser
     {
@@ -44,8 +44,8 @@ mod tests
         {
             let env = map!( "_name" => "dev" ) ;
             let data = vec![
-                // (RgvType::Env, map!( "_name" => "dev" ) ),
-                // (RgvType::Vars, map!( "x" => "256", "y" => "24")),
+                 (RgvType::Vars, map!( "x" => "256", "y" => "24")),
+                 (RgvType::Env, map!( "_name" => "dev" ) ),
             ];
 
             StubParser{ data : RefCell::new(data)}
@@ -63,9 +63,11 @@ mod tests
     #[test]
     fn use_it()
     {
-        let parser = ParserBox::new(StubParser::new()) ;
-        let main   = RGMain::new() ;
+        pretty_env_logger::init();
+        let parser : ParserBox = Box::new(StubParser::new()) ;
+        let mut main   = RGMain::new() ;
         main.build(&parser) ;
+        debug!("main: {:?}", main) ;
         //main.conf() ;
         //main.start();
     }
