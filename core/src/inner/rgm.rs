@@ -1,19 +1,22 @@
-
-use model::* ;
-use def::* ;
-use res::* ;
-use super::* ;
+inner_use!();
 #[derive(Debug)]
 pub struct RGMain
 {
-    resvec : ResVec ,
+    resvec : RefCell<ResVec>,
 }
 
 impl RGMain 
 {
     pub fn new( ) ->RGMain
     {
-        RGMain{ resvec : ResVec::new() }
+        RGMain{ resvec : RefCell::new(ResVec::new()) }
+    }
+}
+impl InnerContainer for RGMain {
+
+    fn resvec_hold(&self) ->RefMut<ResVec>
+    {
+        self.resvec.borrow_mut()
     }
 }
 

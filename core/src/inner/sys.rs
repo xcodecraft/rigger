@@ -1,20 +1,18 @@
-use model::* ;
-use def::* ;
-use res::* ;
-use super::* ;
+inner_use!();
 #[derive(Debug)]
 pub struct System
 {
     name   : String,
     limit  : String,
-    resvec : ResVec,
+    resvec : RefCell<ResVec>,
 
 }
 impl System 
 {
     pub fn new(name : String) -> System
     {
-        System{name,  limit: String::new(),resvec :ResVec::new() }
+        let resvec = RefCell::new(ResVec::new()) ;
+        System{name,  limit: String::new(),resvec  }
     }
     pub fn load(data: StrMap ) ->System
     {
@@ -57,5 +55,12 @@ impl CallPlugin for System
         trace!("System::res_after") ;
         Ok(())
 
+    }
+}
+impl InnerContainer for System {
+
+    fn resvec_hold(&self) ->RefMut<ResVec>
+    {
+        self.resvec.borrow_mut()
     }
 }

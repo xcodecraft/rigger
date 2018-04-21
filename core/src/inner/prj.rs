@@ -1,20 +1,16 @@
 
-use model::* ;
-use def::* ;
-use res::* ;
-use super::* ;
+inner_use!();
 #[derive(Debug)]
 pub struct Project 
 {
     name   : String,
-    resvec : ResVec,
-
+    resvec : RefCell<ResVec>,
 }
 impl Project 
 {
     pub fn new(name : String) -> Project
     {
-        Project {name,resvec: ResVec::new() } 
+        Project {name,resvec: RefCell::new(ResVec::new()) } 
     }
     pub fn load(data: StrMap ) ->Project
     {
@@ -57,5 +53,12 @@ impl CallPlugin for Project
         trace!("Project::res_after") ;
         Ok(())
 
+    }
+}
+impl InnerContainer for Project {
+
+    fn resvec_hold(&self) ->RefMut<ResVec>
+    {
+        self.resvec.borrow_mut()
     }
 }

@@ -1,14 +1,18 @@
+inner_use!() ;
+#[derive(Debug)]
+pub struct Env
+{
+    name   : String,
+    resvec : RefCell<ResVec>,
+    mix    : Vec<String>,
+}
 
-use model::* ;
-use def::* ;
-use res::* ;
-use super::* ;
 
 impl Env
 {
     pub fn new(name : String) -> Env
     {
-        Env{name, resvec : ResVec::new(), mix : Vec::new() }
+        Env{name, resvec : RefCell::new(ResVec::new()), mix : Vec::new() }
     }
     pub fn load(data: StrMap ) ->Env
     {
@@ -52,5 +56,12 @@ impl CallPlugin for Env
         trace!("Env::res_after") ;
         Ok(())
 
+    }
+}
+impl InnerContainer for Env {
+
+    fn resvec_hold(&self) ->RefMut<ResVec>
+    {
+        self.resvec.borrow_mut()
     }
 }
