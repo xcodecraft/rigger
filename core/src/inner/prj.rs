@@ -27,12 +27,10 @@ impl SellDesp for Project
     fn res_info(&self) -> String
     {
         format!("project: {}",self.name)
-
     }
     fn res_name(&self) -> String
     {
-        format!("project: {}",self.name)
-
+        format!("Project::{}",self.name)
     }
     fn res_allow(&self,_context : &mut Context) ->BoolR 
     {
@@ -50,7 +48,6 @@ impl CallPlugin for Project
 
     fn res_after(&self,_context : &mut Context) ->BoolR 
     {
-        trace!("Project::res_after") ;
         Ok(())
 
     }

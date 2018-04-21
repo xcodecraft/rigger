@@ -3,6 +3,7 @@ use model::* ;
 use res::* ;
 use def::* ;
 use std::cell::RefMut;
+use parser::* ;
 
 
 #[macro_export]
@@ -37,7 +38,6 @@ pub mod rgm ;
 pub mod sys ;
 pub mod var ;
 pub mod proxy ;
-pub mod bind ;
 
 
 impl <T> StartBehavior for T where T: InnerContainer
@@ -96,34 +96,46 @@ impl <T> Compose for T  where T: InnerContainer
 {
     fn build(&mut self,parser : &ParserBox)
     {
-        if let Some((v,data)) = parser.next() 
-        {
-
-            let obj: ResBox = match v
+        loop {
+            if let Some(x) = parser.next() 
             {
-                RgvType::Vars    => { Box::new(var::Vars::load(data) )    } ,
-                RgvType::Env     => { 
-                    let mut obj = Box::new(env::Env::load(data)); 
-                                       obj.build(parser); 
-                                       obj   
-                } ,
-                RgvType::System  => { 
-                    let mut obj = Box::new(sys::System::load(data) ) ;
-                    obj.build(parser) ;
-                    obj 
-                } ,
-                RgvType::Project => { 
-                    let mut obj =  Box::new(prj::Project::load(data));  
-                    obj.build(parser) ;
-                    obj
+                match  x.state
+                {
+                    ParseState::In  => {
 
-                } ,
-                RgvType::Res     => { Box::new(proxy::ResProxy::load(data)) } ,
+                        if let Some(v) = x.node 
+                        {
 
-            } ;
-            trace!("regist {}", obj.info() );
-            //obj.build( parser);
-            self.regist(obj);
+                            let obj: ResBox = match v.rkey
+                            {
+                                RgvType::Vars    => { Box::new(var::Vars::load(v.data) )    } ,
+                                RgvType::Env     => { 
+                                    let mut obj = Box::new(env::Env::load(v.data)); 
+                                    obj.build(parser); 
+                                    obj   
+                                } ,
+                                RgvType::System  => { 
+                                    let mut obj = Box::new(sys::System::load(v.data) ) ;
+                                    obj.build(parser) ;
+                                    obj 
+                                } ,
+                                RgvType::Project => { 
+                                    let mut obj =  Box::new(prj::Project::load(v.data));  
+                                    obj.build(parser) ;
+                                    obj
+
+                                } ,
+                                RgvType::Res => { Box::new(proxy::ResProxy::load(v.data)) } ,
+
+                            } ;
+                            trace!("regist {}", obj.info() );
+                            self.regist(obj);
+                        }
+                    },
+                    ParseState::End =>  { break; }
+                }
+            }
+            else { break; }
         }
     }
     fn regist(&mut self, res : ResBox)

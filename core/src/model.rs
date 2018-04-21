@@ -47,19 +47,4 @@ impl std::fmt::Debug for Res
 
 }
 
-#[derive(Debug,Clone)]
-pub enum  RgvType{
-    Vars,
-    Env,
-    System,
-    Project,
-    //Modul,
-    Res,
-}
-
-pub trait Parser
-{
-    fn  next(&self) -> Option<(RgvType,StrMap)> ;
-}
-pub type ParserBox = Box<Parser> ;
 

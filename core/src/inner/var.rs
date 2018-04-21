@@ -77,7 +77,6 @@ impl CallPlugin for Vars
 
     fn res_after(&self,_context : &mut Context) ->BoolR 
     {
-        trace!("Vars::res_after") ;
         Ok(())
 
     }

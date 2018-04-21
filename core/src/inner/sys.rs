@@ -52,7 +52,6 @@ impl CallPlugin for System
 
     fn res_after(&self,_context : &mut Context) ->BoolR 
     {
-        trace!("System::res_after") ;
         Ok(())
 
     }

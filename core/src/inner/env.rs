@@ -35,7 +35,7 @@ impl SellDesp for Env
     }
     fn res_name(&self) -> String
     {
-        format!("env: {}",self.name)
+        format!("Env::{}",self.name)
 
     }
     fn res_allow(&self,_context : &mut Context) ->BoolR 
@@ -53,7 +53,6 @@ impl CallPlugin for Env
 
     fn res_after(&self,_context : &mut Context) ->BoolR 
     {
-        trace!("Env::res_after") ;
         Ok(())
 
     }

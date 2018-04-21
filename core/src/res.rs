@@ -26,49 +26,72 @@ pub trait StartBehavior
     fn res_check(&self , context : &mut Context  ) ->BoolR;
 }
 
-impl<T> Res for T  
-where T: SellDesp +  StartBehavior + StopBehavior + CallPlugin
+trait  Interceptor 
 {
+    fn do_before(&self , context : &mut Context ) ->BoolR ;
+    fn do_after(&self  , context : &mut Context ) ->BoolR ;
+}
+
+impl <T> Interceptor for T  where T : CallPlugin +  SellDesp
+{
+    fn do_before(&self , context : &mut Context ) ->BoolR
+    {
+        trace!("[{}]::res_before", self.res_name()) ;
+        self.res_before(context)
+    }
+    fn do_after(&self  , context : &mut Context ) ->BoolR
+    {
+        trace!("[{}]::res_after", self.res_name()) ;
+        self.res_after(context)
+    }
+
+}
+
+
+impl<T> Res for T  
+where T: SellDesp +  StartBehavior + StopBehavior + CallPlugin + Interceptor
+{
+
     fn allow(&self,context : &mut Context) ->BoolR 
     {
         self.res_allow(context) 
     }
     fn conf(&self,context : &mut Context) ->BoolR 
     {
-        self.res_before(context)? ;
+        self.do_before(context)? ;
         self.res_conf(context)? ;
-        self.res_after(context)?;
+        self.do_after(context)?;
         Ok(())
     }
 
     fn start(&self,context : &mut Context) ->BoolR 
     {
-        self.res_before(context)? ;
+        self.do_before(context)? ;
         self.res_start(context)? ;
-        self.res_after(context)?;
+        self.do_after(context)?;
         Ok(())
     }
 
     fn stop(&self,context : &mut Context) ->BoolR 
     {
-        self.res_before(context)? ;
+        self.do_before(context)? ;
         self.res_stop(context)? ;
-        self.res_after(context)? ;
+        self.do_after(context)? ;
         Ok(())
     }
     fn check(&self,context : &mut Context) ->BoolR 
     {
-        self.res_before(context)? ;
+        self.do_before(context)? ;
         self.res_check(context)? ;
-        self.res_after(context)? ;
+        self.do_after(context)? ;
         Ok(())
 
     }
     fn clean(&self,context : &mut Context) ->BoolR 
     {
-        self.res_before(context)? ;
+        self.do_before(context)? ;
         self.res_clean(context)? ;
-        self.res_after(context)? ;
+        self.do_after(context)? ;
         Ok(())
 
     }
