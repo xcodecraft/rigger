@@ -1,0 +1,31 @@
+include = ["tpl.toml", "rigger.toml"]
+
+[project]
+name = "rigger-nx"
+
+[[env]]
+  name = "res"
+  [[env.vars]]
+    base_include = "fundation"
+    port         = 80
+
+[[env]]
+  name = "dev"
+  [[env.vars]]
+    base_include = "fundation"
+
+
+[[env]]
+  name = "demo"
+  mix  = ["base"]
+
+
+[[system]]
+name : "init"
+[[system.limit]]
+envs = "demo,online"
+passwd = "123"
+[[system.file_tpl]]
+tpl = "${PRJ_ROOT}/conf/options/api.cron"
+dst = "${PRJ_ROOT}/conf/used/api.cron"
+
