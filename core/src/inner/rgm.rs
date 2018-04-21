@@ -75,12 +75,12 @@ mod tests
         {
             let env = map!( "_name" => "dev" ) ;
             let mut data = vec![
-                ParseResult::new(ParseState::In  , RgvType::Env    , map!( "_name" => "dev" ))  ,
-                ParseResult::new(ParseState::In  , RgvType::Vars   , map!( "x"     => "256"   , "y" => "24")) ,
-                ParseResult::end() ,
-                ParseResult::new(ParseState::In  , RgvType::System , map!( "_name" => "api" ) ) ,
-                ParseResult::new(ParseState::In  , RgvType::Vars   , map!( "x"     => "256"        , "y" => "24")) ,
-                ParseResult::end(),
+                ParseResult::inn( RgvType::Env    , map!( "_name" => "dev" ))  ,
+                ParseResult::inn( RgvType::Vars   , map!( "x"     => "256"     , "y" => "24")) ,
+                ParseResult::end()                ,
+                ParseResult::inn( RgvType::System , map!( "_name" => "api" ) ) ,
+                ParseResult::inn( RgvType::Vars   , map!( "x"     => "256"     , "y" => "24")) ,
+                ParseResult::end()                ,
             ];
             data.reverse();
 
@@ -101,11 +101,12 @@ mod tests
     {
         pretty_env_logger::init();
         let parser : ParserBox = Box::new(StubParser::new()) ;
-        let mut context    = Context::new();
-        let mut main   = RGMain::new() ;
+        let mut context        = Context::new();
+        let mut main           = RGMain::new() ;
         main.build(&parser) ;
         debug!("main: {:?}", main) ;
         main.conf(&mut context) ;
+        main.start(&mut context) ;
         //main.start();
     }
 }

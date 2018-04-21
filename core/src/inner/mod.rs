@@ -32,12 +32,12 @@ pub trait InnerContainer {
     fn resvec_hold(& self) ->RefMut<ResVec> ;
 }
 
-pub mod env ;
-pub mod prj ;
-pub mod rgm ;
-pub mod sys ;
-pub mod var ;
-pub mod proxy ;
+mod env ;
+mod prj ;
+mod rgm ;
+mod sys ;
+mod var ;
+mod proxy ;
 
 
 impl <T> StartBehavior for T where T: InnerContainer

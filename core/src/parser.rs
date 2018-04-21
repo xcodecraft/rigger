@@ -30,9 +30,9 @@ pub struct ParseResult
 }
 impl ParseResult 
 {
-    pub fn new( st: ParseState , rkey: RgvType, data: StrMap )->ParseResult
+    pub fn inn(  rkey: RgvType, data: StrMap )->ParseResult
     {
-        ParseResult { state: st , node : Some( Node {rkey, data  } ) }
+        ParseResult { state: ParseState::In, node : Some( Node {rkey, data  } ) }
     }
     pub fn end() -> ParseResult
     {
