@@ -1,7 +1,7 @@
 include = ["tpl.toml", "rigger.toml"]
 
 [project]
-name = "rigger-nx"
+  name = "rigger-nx"
 
 [[env]]
   name = "res"
@@ -21,11 +21,11 @@ name = "rigger-nx"
 
 
 [[system]]
-name : "init"
-[[system.limit]]
-envs = "demo,online"
-passwd = "123"
-[[system.file_tpl]]
-tpl = "${PRJ_ROOT}/conf/options/api.cron"
-dst = "${PRJ_ROOT}/conf/used/api.cron"
+  name = "init"
+  [[system.limit]]
+    envs    = "demo,online"
+    passwd  = "123"
+  [[system.file_tpl]]
+    tpl = "${PRJ_ROOT}/conf/options/api.cron"
+    dst = "${PRJ_ROOT}/conf/used/api.cron"
 
