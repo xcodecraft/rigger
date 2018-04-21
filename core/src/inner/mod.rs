@@ -3,6 +3,7 @@ use model::* ;
 use res::* ;
 use def::* ;
 use std::cell::RefMut;
+use creator::* ;
 use parser::* ;
 
 
@@ -15,6 +16,8 @@ macro_rules! inner_use{
       use def::* ;
       #[allow(unused_imports)]
       use res::* ;
+      #[allow(unused_imports)]
+      use creator::* ;
       #[allow(unused_imports)]
       use super::* ;
       #[allow(unused_imports)]
@@ -38,6 +41,7 @@ mod rgm ;
 mod sys ;
 mod var ;
 mod proxy ;
+mod utls ;
 
 
 impl <T> StartBehavior for T where T: InnerContainer
@@ -89,12 +93,12 @@ impl <T> StopBehavior for T where T: InnerContainer
 
 trait Compose
 {
-    fn build(&mut self,parser : &ParserBox) ;
+    fn build(&mut self,parser : &ParserBox,god :&ResFatory) ;
     fn regist(&mut self, res : ResBox);
 }
 impl <T> Compose for T  where T: InnerContainer 
 {
-    fn build(&mut self,parser : &ParserBox)
+    fn build(&mut self,parser : &ParserBox,god :&ResFatory)
     {
         loop {
             if let Some(x) = parser.next() 
@@ -110,22 +114,22 @@ impl <T> Compose for T  where T: InnerContainer
                             {
                                 RgvType::Vars    => { Box::new(var::Vars::load(v.data) )    } ,
                                 RgvType::Env     => { 
-                                    let mut obj = Box::new(env::Env::load(v.data)); 
-                                    obj.build(parser); 
+                                    let mut obj = Box::new(env::Env::load(&v.data)); 
+                                    obj.build(parser,god); 
                                     obj   
                                 } ,
                                 RgvType::System  => { 
                                     let mut obj = Box::new(sys::System::load(v.data) ) ;
-                                    obj.build(parser) ;
+                                    obj.build(parser,god) ;
                                     obj 
                                 } ,
                                 RgvType::Project => { 
                                     let mut obj =  Box::new(prj::Project::load(v.data));  
-                                    obj.build(parser) ;
+                                    obj.build(parser,god) ;
                                     obj
 
                                 } ,
-                                RgvType::Res => { Box::new(proxy::ResProxy::load(v.data)) } ,
+                                RgvType::Res(key) => { god.create(&key,&v.data).unwrap() } ,
 
                             } ;
                             trace!("regist {}", obj.info() );
@@ -145,5 +149,9 @@ impl <T> Compose for T  where T: InnerContainer
 }
 
 
+pub fn  mod_regist(f : &mut ResFatory)
+{
+    utls::file_regist(f) ;
+}
 
 

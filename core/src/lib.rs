@@ -63,6 +63,7 @@ mod err ;
 #[macro_use]
 mod def ;
 pub mod model ;
+pub mod creator ;
 mod parser ;
 mod res ;
 mod inner ;

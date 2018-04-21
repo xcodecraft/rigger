@@ -1,3 +1,7 @@
+_include:
+  - "${PRJ_ROOT}/_rg/modul.yaml"
+  - "${PRJ_ROOT}/_rg/utls.yaml"
+
 _env:
     - !R.env
         _name: "_dev"

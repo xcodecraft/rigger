@@ -1,4 +1,11 @@
-_env:
+__inc:
+  - "${PRJ_ROOT}/_rg/modul.yaml"
+  - "${PRJ_ROOT}/_rg/utls.yaml"
+__prj:
+    _type : "project"
+    name  : "rigger-ng"
+    root  : "${HOME}/devspace/rigger-ng"
+__env:
     - !R.env
         _type : "env"
         _name : "_dev"
@@ -28,7 +35,7 @@ _env:
         _name : "dev"
         _mix  : "_dev,ENV_A,ENV_B"
 
-_sys:
+__sys:
     -  !R.system
         _type : "system"
         _name : "test"

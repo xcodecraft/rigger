@@ -77,6 +77,7 @@ mod tests
             let mut data = vec![
                 ParseResult::inn( RgvType::Env    , map!( "_name" => "dev" ))  ,
                 ParseResult::inn( RgvType::Vars   , map!( "x"     => "256"     , "y" => "24")) ,
+                ParseResult::inn( res_of("Echo")  , map!( "value" => "china")) ,
                 ParseResult::end()                ,
                 ParseResult::inn( RgvType::System , map!( "_name" => "api" ) ) ,
                 ParseResult::inn( RgvType::Vars   , map!( "x"     => "256"     , "y" => "24")) ,
@@ -101,12 +102,14 @@ mod tests
     {
         pretty_env_logger::init();
         let parser : ParserBox = Box::new(StubParser::new()) ;
+        let mut god = ResFatory::new() ;
+        mod_regist(&mut god);
         let mut context        = Context::new();
         let mut main           = RGMain::new() ;
-        main.build(&parser) ;
+        main.build(&parser,&god) ;
         debug!("main: {:?}", main) ;
         main.conf(&mut context) ;
-        main.start(&mut context) ;
+        //main.start(&mut context) ;
         //main.start();
     }
 }

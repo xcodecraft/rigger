@@ -7,7 +7,7 @@ pub trait SellDesp
 {
     fn res_name(&self  ) ->String;
     fn res_info(&self  ) ->String;
-    fn res_allow(&self , context : &mut Context  ) ->BoolR;
+    fn res_allow(&self,_context : &mut Context) ->BoolR { Ok(()) }
 }
 pub trait CallPlugin 
 {

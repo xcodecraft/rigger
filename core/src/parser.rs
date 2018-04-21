@@ -6,7 +6,12 @@ pub enum  RgvType{
     System,
     Project,
     //Modul,
-    Res,
+    Res(String),
+}
+pub fn res_of( key :&str) -> RgvType
+{
+    RgvType::Res(String::from(key)) 
+
 }
 
 #[derive(Debug,Clone)]
