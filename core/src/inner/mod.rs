@@ -1,22 +1,12 @@
 
 use model::* ;
+use res::* ;
+use def::* ;
 
 pub trait InnerContainer {
-    fn resvec_hold<'a>(&'a mut self) ->&'a mut  ResVec ;
+    fn resvec_hold<'a>(&'a self) ->&'a ResVec ;
 }
 
-// pub trait ResCollection
-// {
-    // fn regist(&mut self,res ResBox) ;
-// }
-// impl <T>  ResCollection  for T  where T : InnerContainer
-// {
-    // fn regist(&mut self,res ResBox)
-    // {
-//
-//
-    // }
-// }
 
 pub  struct  Keyword
 {
@@ -28,76 +18,70 @@ pub struct Modul
 
 }
 
+#[derive(Debug)]
+pub struct Env
+{
+    name   : String,
+    resvec : ResVec,
+    mix    : Vec<String>,
+
+}
+
+
 mod env ;
 mod prj ;
 mod rgm ;
 mod sys ;
 mod var ;
 mod proxy ;
-
-// impl InnerContainer for env::Env {}
-// impl InnerContainer for sys::System{}
-// impl InnerContainer for prj::Project{}
-// impl InnerContainer for rgm::RGMain{}
+mod bind ;
 
 
-/*
 impl <T> StartBehavior for T where T: InnerContainer
 {
-    fn res_allow(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
-
-    }
-    fn res_start(&self,_context : &mut Context) ->BoolR 
+    fn res_start(&self,context : &mut Context) ->BoolR 
     {
 
         let resvec = self.resvec_hold() ;
-        for res  in resvec 
-        {
-            res.start()? ;
-
-        }
+        for res  in resvec { res.start(context)? ; }
         Ok(())
 
     }
-    fn res_conf(&self,_context : &mut Context) ->BoolR 
+    fn res_conf(&self,context : &mut Context) ->BoolR 
     {
         let resvec = self.resvec_hold() ;
-        for res  in resvec 
-        {
-            res.conf()? ;
-
-        }
+        for res  in resvec { res.conf(context)? ; }
         Ok(())
 
     }
-    fn res_info(&self) -> String
+    fn res_check(&self,context : &mut Context) ->BoolR 
     {
-        format!("env: {}",self.name)
+        let resvec = self.resvec_hold() ;
+        for res in resvec { res.check(context) ; }
+        Ok(())
 
     }
 }
 impl <T> StopBehavior for T where T: InnerContainer
 {
-    fn res_stop(&self,_context : &mut Context) ->BoolR 
+    fn res_stop(&self,context : &mut Context) ->BoolR 
     {
+        let resvec = self.resvec_hold() ;
+        //resvec.reverse();
+        for res  in resvec { res.stop(context)? ; }
         Ok(())
 
     }
-    fn res_clean(&self,_context : &mut Context) ->BoolR 
+    fn res_clean(&self,context : &mut Context) ->BoolR 
     {
-        Ok(())
-
-    }
-    fn res_check(&self,_context : &mut Context) ->BoolR 
-    {
+        let resvec = self.resvec_hold();
+        //resvec.reverse();
+        for res in resvec { res.clean(context) ; }
         Ok(())
 
     }
 
 }
-*/
 
 
 trait Compose

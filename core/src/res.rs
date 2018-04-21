@@ -2,6 +2,13 @@
 use err ;
 use def::* ;
 use model::* ;
+
+pub trait SellDesp
+{
+    fn res_name(&self  ) ->String;
+    fn res_info(&self  ) ->String;
+    fn res_allow(&self , context : &mut Context  ) ->BoolR;
+}
 pub trait CallPlugin 
 {
     fn res_before(&self , context : &mut Context ) ->BoolR;
@@ -10,19 +17,17 @@ pub trait CallPlugin
 pub trait StopBehavior
 {
     fn res_stop(&self  , context : &mut Context  ) ->BoolR;
-    fn res_check(&self , context : &mut Context  ) ->BoolR;
     fn res_clean(&self , context : &mut Context ) ->BoolR;
 }
 pub trait StartBehavior
 {
-    fn res_allow(&self , context : &mut Context  ) ->BoolR;
     fn res_conf(&self  , context : &mut Context  ) ->BoolR;
     fn res_start(&self , context : &mut Context  ) ->BoolR;
-    fn res_info(&self) ->String;
+    fn res_check(&self , context : &mut Context  ) ->BoolR;
 }
 
 impl<T> Res for T  
-where T: StartBehavior + StopBehavior + CallPlugin
+where T: SellDesp +  StartBehavior + StopBehavior + CallPlugin
 {
     fn allow(&self,context : &mut Context) ->BoolR 
     {
@@ -93,13 +98,27 @@ mod tests
         fn new() -> StubRes { StubRes{} }
     }
     //impl DefaultCtrl for StubRes {} 
-    impl StartBehavior for StubRes
+    impl SellDesp  for StubRes
     {
+        fn res_info(&self) -> String
+        {
+            format!("StubRes: {}","")
+
+        }
+        fn res_name(&self) -> String
+        {
+            format!("StubRes: {}","")
+
+        }
         fn res_allow(&self,_context : &mut Context) ->BoolR 
         {
             Ok(())
 
         }
+
+    }
+    impl StartBehavior for StubRes
+    {
         fn res_start(&self,_context : &mut Context) ->BoolR 
         {
             Ok(())
@@ -110,9 +129,9 @@ mod tests
             Ok(())
 
         }
-        fn res_info(&self ) ->String
+        fn res_check(&self,_context : &mut Context) ->BoolR 
         {
-            format!("stub res")
+            Ok(())
 
         }
     }
@@ -124,11 +143,6 @@ mod tests
 
         }
         fn res_clean(&self,_context : &mut Context) ->BoolR 
-        {
-            Ok(())
-
-        }
-        fn res_check(&self,_context : &mut Context) ->BoolR 
         {
             Ok(())
 

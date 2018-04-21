@@ -25,57 +25,26 @@ impl System
     }
 
 }
-
-impl InnerContainer for System {
-
-    fn resvec_hold<'a>(&'a mut self) ->&'a mut  ResVec 
-    {
-        &mut self.resvec
-    }
-}
-
-impl StartBehavior for System
+impl SellDesp for System
 {
+    fn res_info(&self) -> String
+    {
+        format!("System: {}",self.name)
+
+    }
+    fn res_name(&self) -> String
+    {
+        format!("System: {}",self.name)
+
+    }
     fn res_allow(&self,_context : &mut Context) ->BoolR 
     {
         Ok(())
 
     }
-    fn res_start(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
-
-    }
-    fn res_conf(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
-
-    }
-    fn res_info(&self) ->String
-    {
-        format!("system : {}", self.name)
-
-    }
 }
-impl StopBehavior for System 
-{
-    fn res_stop(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
 
-    }
-    fn res_clean(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
 
-    }
-    fn res_check(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
-
-    }
-
-}
 impl CallPlugin for System 
 {
     fn res_before(&self,_context : &mut Context) ->BoolR 

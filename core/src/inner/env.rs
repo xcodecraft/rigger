@@ -3,14 +3,6 @@ use model::* ;
 use def::* ;
 use res::* ;
 use super::* ;
-#[derive(Debug)]
-pub struct Env
-{
-    name   : String,
-    resvec : ResVec,
-    mix    : Vec<String>,
-
-}
 
 impl Env
 {
@@ -29,55 +21,24 @@ impl Env
     }
 
 }
-impl InnerContainer for Env {
 
-    fn resvec_hold<'a>(&'a mut self) ->&'a mut  ResVec 
-    {
-        &mut self.resvec
-    }
-}
-
-impl StartBehavior for Env
+impl SellDesp for Env
 {
-    fn res_allow(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
-
-    }
-    fn res_start(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
-
-    }
-    fn res_conf(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
-
-    }
     fn res_info(&self) -> String
     {
         format!("env: {}",self.name)
 
     }
-}
-impl StopBehavior for Env 
-{
-    fn res_stop(&self,_context : &mut Context) ->BoolR 
+    fn res_name(&self) -> String
+    {
+        format!("env: {}",self.name)
+
+    }
+    fn res_allow(&self,_context : &mut Context) ->BoolR 
     {
         Ok(())
 
     }
-    fn res_clean(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
-
-    }
-    fn res_check(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
-
-    }
-
 }
 impl CallPlugin for Env 
 {

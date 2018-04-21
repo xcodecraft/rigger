@@ -17,13 +17,6 @@ impl RGMain
     }
 }
 
-impl InnerContainer for RGMain {
-
-    fn resvec_hold<'a>(&'a mut self) ->&'a mut  ResVec 
-    {
-        &mut self.resvec
-    }
-}
 
 
 #[cfg(test)]

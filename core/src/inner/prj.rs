@@ -25,56 +25,26 @@ impl Project
 
 }
 
-impl InnerContainer for Project {
 
-    fn resvec_hold<'a>(&'a mut self) ->&'a mut  ResVec 
-    {
-        &mut self.resvec
-    }
-}
-
-impl StartBehavior for Project
+impl SellDesp for Project
 {
+    fn res_info(&self) -> String
+    {
+        format!("project: {}",self.name)
+
+    }
+    fn res_name(&self) -> String
+    {
+        format!("project: {}",self.name)
+
+    }
     fn res_allow(&self,_context : &mut Context) ->BoolR 
     {
         Ok(())
 
     }
-    fn res_start(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
-
-    }
-    fn res_conf(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
-
-    }
-    fn res_info(&self) ->String
-    {
-        format!("project : {}",self.name)
-
-    }
 }
-impl StopBehavior for Project 
-{
-    fn res_stop(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
 
-    }
-    fn res_clean(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
-
-    }
-    fn res_check(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
-
-    }
-
-}
 impl CallPlugin for Project 
 {
     fn res_before(&self,_context : &mut Context) ->BoolR 

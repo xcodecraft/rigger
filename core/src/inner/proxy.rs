@@ -14,59 +14,69 @@ impl  ResProxy
         ResProxy{}
     }
 }
-    impl StartBehavior for ResProxy
+
+impl SellDesp for ResProxy
+{
+    fn res_info(&self) -> String
     {
-        fn res_allow(&self,_context : &mut Context) ->BoolR 
-        {
-            Ok(())
-
-        }
-        fn res_start(&self,_context : &mut Context) ->BoolR 
-        {
-            Ok(())
-
-        }
-        fn res_conf(&self,_context : &mut Context) ->BoolR 
-        {
-            Ok(())
-
-        }
-        fn res_info(&self) ->String
-        {
-            format!("res: ") 
-
-        }
-    }
-    impl StopBehavior for ResProxy 
-    {
-        fn res_stop(&self,_context : &mut Context) ->BoolR 
-        {
-            Ok(())
-
-        }
-        fn res_clean(&self,_context : &mut Context) ->BoolR 
-        {
-            Ok(())
-
-        }
-        fn res_check(&self,_context : &mut Context) ->BoolR 
-        {
-            Ok(())
-
-        }
+        format!("ResProxy : {}","")
 
     }
-    impl CallPlugin for ResProxy 
+    fn res_name(&self) -> String
     {
-        fn res_before(&self,_context : &mut Context) ->BoolR 
-        {
-            Ok(())
-        }
+        format!("ResProxy: {}","")
 
-        fn res_after(&self,_context : &mut Context) ->BoolR 
-        {
-            trace!("ResProxy::res_after") ;
-            Ok(())
-
-        }
     }
+    fn res_allow(&self,_context : &mut Context) ->BoolR 
+    {
+        Ok(())
+
+    }
+}
+
+impl StartBehavior for ResProxy
+{
+    fn res_start(&self,_context : &mut Context) ->BoolR 
+    {
+        Ok(())
+
+    }
+    fn res_conf(&self,_context : &mut Context) ->BoolR 
+    {
+        Ok(())
+
+    }
+    fn res_check(&self,_context : &mut Context) ->BoolR 
+    {
+        Ok(())
+
+    }
+}
+impl StopBehavior for ResProxy 
+{
+    fn res_stop(&self,_context : &mut Context) ->BoolR 
+    {
+        Ok(())
+
+    }
+    fn res_clean(&self,_context : &mut Context) ->BoolR 
+    {
+        Ok(())
+
+    }
+
+}
+impl CallPlugin for ResProxy 
+{
+    fn res_before(&self,_context : &mut Context) ->BoolR 
+    {
+        Ok(())
+    }
+
+    fn res_after(&self,_context : &mut Context) ->BoolR 
+    {
+        trace!("ResProxy::res_after") ;
+        Ok(())
+
+    }
+}
