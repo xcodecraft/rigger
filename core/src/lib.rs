@@ -60,6 +60,17 @@ macro_rules! use_test {
 
 #[macro_use]
 mod err ;
+#[macro_use]
 mod def ;
 pub mod model ;
+pub mod creator ;
+mod parser ;
+mod res ;
+mod inner ;
+
+
+pub fn __main() {
+    assert!(false) ;
+    debug!("hello") ;
+}
 

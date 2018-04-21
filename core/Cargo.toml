@@ -3,6 +3,11 @@ name    = "core"
 version = "0.1.0"
 authors = ["zuowenjian <zuowenjian@outlook.com>"]
 
+
+[lib]
+name = "core"
+path = "src/lib.rs"
+
 [dependencies]
 log               = "0.4.1"
 serde             = "1.0"
