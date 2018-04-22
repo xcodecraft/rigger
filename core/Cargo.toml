@@ -1,11 +1,11 @@
 [package]
-name    = "core"
+name    = "rg_core"
 version = "0.1.0"
 authors = ["zuowenjian <zuowenjian@outlook.com>"]
 
 
 [lib]
-name = "core"
+name = "rg_core"
 path = "src/lib.rs"
 
 [dependencies]

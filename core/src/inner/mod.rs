@@ -37,7 +37,7 @@ pub trait InnerContainer {
 
 mod env ;
 mod prj ;
-mod rgm ;
+pub mod rgm ;
 mod sys ;
 mod var ;
 mod proxy ;
@@ -91,7 +91,7 @@ impl <T> InvokeStop for T where T: InnerContainer
 }
 
 
-trait Compose
+pub trait Compose
 {
     fn build(&mut self,parser : &ParserBox,god :&ResFatory) ;
     fn regist(&mut self, res : ResBox);

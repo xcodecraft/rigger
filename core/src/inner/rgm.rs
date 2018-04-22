@@ -64,44 +64,22 @@ mod tests
     use parser::* ;
     use std::cell::RefCell;
     use pretty_env_logger ;
-    type RgDataVec  = Vec<ParseResult> ;
-    struct StubParser
-    {
-        data : RefCell<RgDataVec> ,
-    }
-    impl StubParser
-    {
-        pub fn new() -> StubParser
-        {
-            let env = map!( "_name" => "dev" ) ;
-            let mut data = vec![
-                ParseResult::inn( RgvType::Env    , map!( "_name" => "dev" ))  ,
-                ParseResult::inn( RgvType::Vars   , map!( "x"     => "256"     , "y" => "24")) ,
-                ParseResult::inn( res_of("Echo")  , map!( "value" => "china")) ,
-                ParseResult::end()                ,
-                ParseResult::inn( RgvType::System , map!( "_name" => "api" ) ) ,
-                ParseResult::inn( RgvType::Vars   , map!( "x"     => "256"     , "y" => "24")) ,
-                ParseResult::end()                ,
-            ];
-            data.reverse();
-
-            StubParser{ data : RefCell::new(data)}
-        }
-    }
-    impl  Parser for  StubParser
-    {
-        fn  next(&self) -> Option<ParseResult>
-        {
-            let mut data = self.data.borrow_mut() ;
-            data.pop()
-        }
-    }
-
     #[test]
     fn use_it()
     {
         pretty_env_logger::init();
-        let parser : ParserBox = Box::new(StubParser::new()) ;
+        let mut data = vec![
+            ParseResult::inn( RgvType::Env    , map!( "_name" => "dev" ))  ,
+            ParseResult::inn( RgvType::Vars   , map!( "x"     => "256"     , "y" => "24")) ,
+            ParseResult::inn( res_of("Echo")  , map!( "value" => "china")) ,
+            ParseResult::end()                ,
+            ParseResult::inn( RgvType::System , map!( "_name" => "api" ) ) ,
+            ParseResult::inn( RgvType::Vars   , map!( "x"     => "256"     , "y" => "24")) ,
+            ParseResult::end()                ,
+        ];
+
+
+        let parser : ParserBox = Box::new(StubParser::new(data)) ;
         let mut god = ResFatory::new() ;
         mod_regist(&mut god);
         let mut context        = Context::new();
