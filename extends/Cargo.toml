@@ -1,5 +1,5 @@
 [package]
-name = "extends"
+name = "rg_exts"
 version = "0.1.0"
 authors = ["zuowenjian <zuowenjian@outlook.com>"]
 

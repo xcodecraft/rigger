@@ -51,3 +51,26 @@ pub trait Parser
 }
 pub type ParserBox = Box<Parser> ;
 
+
+use std::cell::RefCell ;
+pub type RgDataVec  = Vec<ParseResult> ;
+pub struct StubParser
+{
+    data : RefCell<RgDataVec> ,
+}
+impl StubParser
+{
+    pub fn new( mut data : RgDataVec) -> StubParser
+    {
+        data.reverse();
+        StubParser{ data : RefCell::new(data)}
+    }
+}
+impl  Parser for  StubParser
+{
+    fn  next(&self) -> Option<ParseResult>
+    {
+        let mut data = self.data.borrow_mut() ;
+        data.pop()
+    }
+}
