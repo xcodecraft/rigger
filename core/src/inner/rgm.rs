@@ -40,7 +40,7 @@ impl SellDesp for RGMain
 }
 
 
-impl CallPlugin for RGMain
+impl InvokeHook for RGMain
 {
     fn res_before(&self,_context : &mut Context) ->BoolR 
     {

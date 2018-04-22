@@ -49,7 +49,7 @@ impl SellDesp for Env
 
     }
 }
-impl CallPlugin for Env 
+impl InvokeHook for Env 
 {
     fn res_before(&self,_context : &mut Context) ->BoolR 
     {

@@ -44,7 +44,7 @@ mod proxy ;
 mod utls ;
 
 
-impl <T> StartBehavior for T where T: InnerContainer
+impl <T> InvokeStart for T where T: InnerContainer
 {
     fn res_start(&self,context : &mut Context) ->BoolR 
     {
@@ -69,7 +69,7 @@ impl <T> StartBehavior for T where T: InnerContainer
 
     }
 }
-impl <T> StopBehavior for T where T: InnerContainer
+impl <T> InvokeStop for T where T: InnerContainer
 {
     fn res_stop(&self,context : &mut Context) ->BoolR 
     {
