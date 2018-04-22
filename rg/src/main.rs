@@ -7,15 +7,14 @@ extern crate rg_core;
 #[macro_use]
 extern crate clap;
 
-use clap::{Arg, App, SubCommand};
-use clap::AppSettings;
-
+use clap::{Arg, App};
 
 fn main() {
 	pretty_env_logger::init();
-    rg_core::rg_main();
+	rg_core::rg_main();
 //	parse();
 }
+
 
 fn parse() {
 	//rg conf start -e dev -s init
@@ -24,34 +23,31 @@ fn parse() {
 	let matches = App::new(crate_name!())
 		.version(crate_version!())
 		.author(crate_authors!())
-//		.setting(AppSettings::SubcommandRequiredElseHelp)
 		.about("rg is rigger simple name")
-		.subcommands(vec![
-			SubCommand::with_name("conf").about("conf project"),
-			SubCommand::with_name("start").about("start project"),
-			SubCommand::with_name("stop").about("stop project"),
-			SubCommand::with_name("clean").about("clean project"),
-			SubCommand::with_name("rc").about("rc project")])
 		.arg(Arg::with_name("env")
 			.short("e")
+			.long("env")
 			.takes_value(true)
 			.requires("system")
 			.help("env"))
 		.arg(Arg::with_name("system")
 			.short("s")
+			.long("system")
 			.takes_value(true)
 			.help("system"))
+		.arg(Arg::with_name("conf")
+			.help("rigger conf in project")
+			.multiple(true)
+			.possible_values(&["conf", "clean", "start", "stop", "rc"]))
 		.get_matches();
 
+	if let Some(config) = matches.values_of("conf") {
+		let confs = Some(config).unwrap().collect::<Vec<_>>();
+		println!("confs is {:?}", confs);
+	}
 
-	match matches.subcommand_name() {
-		Some("conf") => println!("subcmd conf"),
-		Some("start") => println!("subcmd start"),
-		Some("stop") => println!("subcmd stop"),
-		Some("clean") => println!("subcmd clean"),
-		Some("rc") => println!("subcmd rc"),
-		None => println!("No subcommand was used"),
-		_ => println!("Some other subcommand was used"),
+	if let Some(config) = matches.value_of("action") {
+		println!("A action is: {}", config);
 	}
 
 	if let Some(config) = matches.value_of("env") {
