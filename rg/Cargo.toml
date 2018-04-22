@@ -1,5 +1,5 @@
 [package]
-name    = "rgger-nx"
+name    = "rg"
 version = "0.1.0"
 authors = ["zuowenjian <zuowenjian@outlook.com>"]
 
@@ -7,6 +7,7 @@ authors = ["zuowenjian <zuowenjian@outlook.com>"]
 log               = "0.4.1"
 pretty_env_logger = "0.2"
 toml              = "0.4"
+clap              = "2.31.2"
 rg_core           = { path  = "../core", version    = "*" }
 rg_exts           = { path  = "../extends", version = "*" }
 
