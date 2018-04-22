@@ -15,7 +15,7 @@ impl  ResProxy
     }
 }
 
-impl SellDesp for ResProxy
+impl ResDesp for ResProxy
 {
     fn res_info(&self) -> String
     {
@@ -34,7 +34,7 @@ impl SellDesp for ResProxy
     }
 }
 
-impl StartBehavior for ResProxy
+impl InvokeStart for ResProxy
 {
     fn res_start(&self,_context : &mut Context) ->BoolR 
     {
@@ -52,7 +52,7 @@ impl StartBehavior for ResProxy
 
     }
 }
-impl StopBehavior for ResProxy 
+impl InvokeStop for ResProxy 
 {
     fn res_stop(&self,_context : &mut Context) ->BoolR 
     {
@@ -66,7 +66,7 @@ impl StopBehavior for ResProxy
     }
 
 }
-impl CallPlugin for ResProxy 
+impl InvokeHook for ResProxy 
 {
     fn res_before(&self,_context : &mut Context) ->BoolR 
     {

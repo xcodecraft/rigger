@@ -22,7 +22,7 @@ impl Project
 }
 
 
-impl SellDesp for Project
+impl ResDesp for Project
 {
     fn res_info(&self) -> String
     {
@@ -39,7 +39,7 @@ impl SellDesp for Project
     }
 }
 
-impl CallPlugin for Project 
+impl InvokeHook for Project 
 {
     fn res_before(&self,_context : &mut Context) ->BoolR 
     {

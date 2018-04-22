@@ -32,7 +32,7 @@ impl ResFatory
 }
 
 pub fn createor_impl<T>(key :&String, data : &StrMap) -> Option<Box<Res>>
-    where T: Loader<T> + SellDesp   + CallPlugin + StartBehavior + StopBehavior + 'static
+    where T: Loader<T> + ResDesp   + InvokeHook + InvokeStart + InvokeStop + 'static
 {
     if *key == T::key()
     {
@@ -43,7 +43,7 @@ pub fn createor_impl<T>(key :&String, data : &StrMap) -> Option<Box<Res>>
 }
 
 pub fn regist_creator<T>(f : &mut ResFatory)
-    where T: Loader<T> + SellDesp   + CallPlugin + StartBehavior + StopBehavior + 'static
+    where T: Loader<T> + ResDesp   + InvokeHook + InvokeStart + InvokeStop + 'static
 {
      let fnobj : Creator = createor_impl::<T> ;
      f.regist(T::key(),fnobj) ;

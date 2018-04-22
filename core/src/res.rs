@@ -3,25 +3,25 @@ use err ;
 use def::* ;
 use model::* ;
 
-pub trait SellDesp
+pub trait ResDesp
 {
     fn res_name(&self  ) ->String;
     fn res_info(&self  ) ->String;
     fn res_allow(&self,_context : &mut Context) ->BoolR { Ok(()) }
 }
-pub trait CallPlugin 
+pub trait InvokeHook 
 {
     fn res_before(&self,_context : &mut Context) ->BoolR { Ok(()) }
     fn res_after(&self,_context  : &mut Context) ->BoolR { Ok(()) }
 }
-pub trait StartBehavior
+pub trait InvokeStart
 {
     fn res_start(&self,_context : &mut Context) ->BoolR { Ok(()) }
     fn res_conf(&self,_context  : &mut Context) ->BoolR { Ok(()) }
     fn res_check(&self,_context : &mut Context) ->BoolR { Ok(()) }
 }
 
-pub trait StopBehavior
+pub trait InvokeStop
 {
     fn res_stop(&self,_context  : &mut Context) ->BoolR { Ok(()) }
     fn res_clean(&self,_context : &mut Context) ->BoolR { Ok(()) }
@@ -33,7 +33,7 @@ trait  Interceptor
 }
 
 
-impl <T> Interceptor for T  where T : CallPlugin +  SellDesp
+impl <T> Interceptor for T  where T : InvokeHook +  ResDesp
 {
     fn do_before(&self , context : &mut Context ) ->BoolR
     {
@@ -49,7 +49,7 @@ impl <T> Interceptor for T  where T : CallPlugin +  SellDesp
 
 
 impl<T> Res for T  
-where T: SellDesp +  StartBehavior + StopBehavior + CallPlugin + Interceptor
+where T: ResDesp +  InvokeStart + InvokeStop + InvokeHook + Interceptor
 {
 
     fn allow(&self,context : &mut Context) ->BoolR 
@@ -130,7 +130,7 @@ mod tests
     impl StubRes {
         fn new() -> StubRes { StubRes{} }
     }
-    impl SellDesp  for StubRes
+    impl ResDesp  for StubRes
     {
         fn res_info(&self) -> String
         {
@@ -149,9 +149,9 @@ mod tests
         }
 
     }
-    impl CallPlugin for StubRes {}
-    impl StartBehavior for StubRes {}
-    impl StopBehavior for StubRes {}
+    impl InvokeHook for StubRes {}
+    impl InvokeStart for StubRes {}
+    impl InvokeStop for StubRes {}
     #[test]
     fn useres_stub()
     {

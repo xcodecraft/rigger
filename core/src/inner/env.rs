@@ -31,7 +31,7 @@ impl Loader<Env> for Env
     fn key() -> String { String::from("Env") }
 }
 
-impl SellDesp for Env
+impl ResDesp for Env
 {
     fn res_info(&self) -> String
     {
@@ -49,7 +49,7 @@ impl SellDesp for Env
 
     }
 }
-impl CallPlugin for Env 
+impl InvokeHook for Env 
 {
     fn res_before(&self,_context : &mut Context) ->BoolR 
     {

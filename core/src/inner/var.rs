@@ -15,7 +15,7 @@ impl Vars
     }
 }
 
-impl SellDesp for Vars
+impl ResDesp for Vars
 {
     fn res_info(&self) -> String
     {
@@ -36,7 +36,7 @@ impl SellDesp for Vars
 
 
 
-impl StartBehavior for Vars
+impl InvokeStart for Vars
 {
     fn res_start(&self,_context : &mut Context) ->BoolR 
     {
@@ -54,7 +54,7 @@ impl StartBehavior for Vars
 
     }
 }
-impl StopBehavior for Vars 
+impl InvokeStop for Vars 
 {
     fn res_stop(&self,_context : &mut Context) ->BoolR 
     {
@@ -68,7 +68,7 @@ impl StopBehavior for Vars
     }
 
 }
-impl CallPlugin for Vars 
+impl InvokeHook for Vars 
 {
     fn res_before(&self,_context : &mut Context) ->BoolR 
     {

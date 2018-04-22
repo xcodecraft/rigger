@@ -20,7 +20,7 @@ impl InnerContainer for RGMain {
     }
 }
 
-impl SellDesp for RGMain
+impl ResDesp for RGMain
 {
     fn res_info(&self) -> String
     {
@@ -40,7 +40,7 @@ impl SellDesp for RGMain
 }
 
 
-impl CallPlugin for RGMain
+impl InvokeHook for RGMain
 {
     fn res_before(&self,_context : &mut Context) ->BoolR 
     {

@@ -23,11 +23,11 @@ impl Loader<Echo> for Echo
 
 
 
-impl CallPlugin for Echo{}
-impl StopBehavior for Echo{}
+impl InvokeHook for Echo{}
+impl InvokeStop for Echo{}
 
 
-impl SellDesp for Echo
+impl ResDesp for Echo
 {
     fn res_info(&self) -> String {
         format!("Echo")
@@ -39,7 +39,7 @@ impl SellDesp for Echo
 
 
 
-impl StartBehavior for Echo
+impl InvokeStart for Echo
 {
     fn res_conf(&self,_context : &mut Context) ->BoolR 
     {

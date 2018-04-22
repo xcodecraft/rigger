@@ -23,7 +23,7 @@ impl System
     }
 
 }
-impl SellDesp for System
+impl ResDesp for System
 {
     fn res_info(&self) -> String
     {
@@ -43,7 +43,7 @@ impl SellDesp for System
 }
 
 
-impl CallPlugin for System 
+impl InvokeHook for System 
 {
     fn res_before(&self,_context : &mut Context) ->BoolR 
     {
