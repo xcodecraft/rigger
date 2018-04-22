@@ -11,56 +11,45 @@ extern crate lazy_static;
 
 extern crate toml;
 
-#[macro_export]
-macro_rules! use_min_lib {
-  ()  =>   {
-
-      #[allow(unused_imports)]
-      use std ;
-      #[allow(unused_imports)]
-      use err ;
-      #[allow(unused_imports)]
-      use def::* ;
-  }
-}
-
-#[macro_export]
-macro_rules! use_lib {
-  ()  =>   {
-
-      #[allow(unused_imports)]
-      use std ;
-      #[allow(unused_imports)]
-      use err ;
-      #[allow(unused_imports)]
-      use err::ResultFlow ;
-      #[allow(unused_imports)]
-      use def::* ;
-      #[allow(unused_imports)]
-      use model::* ;
-  }
-}
-
-#[macro_export]
-macro_rules! use_test {
-  ()  =>   {
-
-      #[allow(unused_imports)]
-      use std ;
-      #[allow(unused_imports)]
-      use file;
-      #[allow(unused_imports)]
-      use err ;
-      #[allow(unused_imports)]
-      use def::* ;
-      #[allow(unused_imports)]
-      use model::* ;
-    }
-}
 
 #[macro_use]
-mod err ;
-mod def ;
+pub mod err ;
+#[macro_use]
+pub mod def ;
 pub mod model ;
+pub mod creator ;
+pub mod parser ;
 mod res ;
+pub mod inner ;
 
+
+use err::* ;
+use def::* ;
+use model::* ;
+use parser::* ;
+use creator::* ;
+use inner::rgm::* ;
+use inner::*;
+
+pub fn rg_main()
+{
+    let mut data = vec![
+        ParseResult::inn( RgvType::Env    , map!( "_name" => "dev" ))  ,
+        ParseResult::inn( RgvType::Vars   , map!( "x"     => "256"     , "y" => "24")) ,
+        ParseResult::inn( res_of("Echo")  , map!( "value" => "china")) ,
+        ParseResult::end()                ,
+        ParseResult::inn( RgvType::System , map!( "_name" => "api" ) ) ,
+        ParseResult::inn( RgvType::Vars   , map!( "x"     => "256"     , "y" => "24")) ,
+        ParseResult::end()                ,
+    ];
+
+    let parser : ParserBox = Box::new(StubParser::new(data)) ;
+    let mut god = ResFatory::new() ;
+    mod_regist(&mut god);
+    let mut context        = Context::new();
+    let mut main           = RGMain::new() ;
+    main.build(&parser,&god) ;
+    debug!("main: {:?}", main) ;
+    main.conf(&mut context) ;
+
+}

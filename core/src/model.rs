@@ -1,6 +1,8 @@
-use std::collections::HashMap;
 use err ;
 use def::* ;
+use std ;
+use std::collections::HashMap ;
+#[derive(Debug,Clone)]
 pub struct Context
 {
 
@@ -32,13 +34,17 @@ pub trait Res
     fn stop(&self  , context : &mut Context ) ->BoolR;
     fn check(&self , context : &mut Context ) ->BoolR;
     fn clean(&self , context : &mut Context ) ->BoolR;
-    fn info(&self  , context : &mut Context ) ->BoolR;
+    fn info(&self) ->String  ;
 }
 pub type ResBox = Box<Res> ;
+pub type ResVec = Vec<Box<Res>> ;
 
-type ResVec = Vec<Box<Res>> ;
-pub struct ResCollection
+impl std::fmt::Debug for Res
 {
-    resvec : ResVec,
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "info :{}", self.info())
+    }
+
 }
+
 

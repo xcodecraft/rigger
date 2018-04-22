@@ -1,14 +1,29 @@
 
 extern crate yaml_rust;
-use self::yaml_rust::{YamlLoader };
+use std::result::Result ;
+use std::io::prelude::*;
+use std::fs::File ;
+use self::yaml_rust::{YamlLoader,ScanError,yaml,Yaml };
 
+pub type YamlVec =  Vec<Yaml> ;
+struct ConfParser
+{
+}
+impl ConfParser 
+{
+    pub fn parse_file(conf_file : &str) ->Result<Vec<Yaml>, ScanError>
+    {
+        let mut file = File::open(conf_file).unwrap();
+        let mut contents = String::new();
+        file.read_to_string(&mut contents).unwrap();
+        YamlLoader::load_from_str(contents.as_str())
+    }
+}
 
 #[cfg(test)]
 mod tests
 {
     use super::* ;
-    use std::io::prelude::*;
-    use std::fs::File ;
     use pretty_env_logger ;
     struct StubParser
     {
@@ -17,10 +32,37 @@ mod tests
     pub fn load_yaml()
     {
         pretty_env_logger::init();
-        let mut file = File::open("./material/run.yaml").unwrap();
-        let mut contents = String::new();
-        file.read_to_string(&mut contents).unwrap();
-        let docs = YamlLoader::load_from_str(contents.as_str()).unwrap();
-        debug!("data {:?}",docs) ;
+        let docs = ConfParser::parse_file("./material/run_mid.yaml").unwrap() ;
+        for doc in &docs {
+            println!("---");
+            dump_node(doc, 0);
+        }
+    }
+
+    fn print_indent(indent: usize) {
+        for _ in 0..indent {
+            print!("    ");
+        }
+    }
+
+    fn dump_node(doc: &yaml::Yaml, indent: usize) {
+        match doc {
+            &yaml::Yaml::Array(ref v) => {
+                for x in v {
+                    dump_node(x, indent + 1);
+                }
+            },
+            &yaml::Yaml::Hash(ref h) => {
+                for (k, v) in h {
+                    print_indent(indent);
+                    println!("{:?}:", k);
+                    dump_node(v, indent + 1);
+                }
+            },
+            _ => {
+                print_indent(indent);
+                println!("{:?}", doc);
+            }
+        }
     }
 }
