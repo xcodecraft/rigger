@@ -27,7 +27,7 @@ impl InvokeHook for Echo{}
 impl InvokeStop for Echo{}
 
 
-impl SellDesp for Echo
+impl ResDesp for Echo
 {
     fn res_info(&self) -> String {
         format!("Echo")

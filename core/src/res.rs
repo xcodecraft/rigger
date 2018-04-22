@@ -3,7 +3,7 @@ use err ;
 use def::* ;
 use model::* ;
 
-pub trait SellDesp
+pub trait ResDesp
 {
     fn res_name(&self  ) ->String;
     fn res_info(&self  ) ->String;
@@ -33,7 +33,7 @@ trait  Interceptor
 }
 
 
-impl <T> Interceptor for T  where T : InvokeHook +  SellDesp
+impl <T> Interceptor for T  where T : InvokeHook +  ResDesp
 {
     fn do_before(&self , context : &mut Context ) ->BoolR
     {
@@ -49,7 +49,7 @@ impl <T> Interceptor for T  where T : InvokeHook +  SellDesp
 
 
 impl<T> Res for T  
-where T: SellDesp +  InvokeStart + InvokeStop + InvokeHook + Interceptor
+where T: ResDesp +  InvokeStart + InvokeStop + InvokeHook + Interceptor
 {
 
     fn allow(&self,context : &mut Context) ->BoolR 
@@ -130,7 +130,7 @@ mod tests
     impl StubRes {
         fn new() -> StubRes { StubRes{} }
     }
-    impl SellDesp  for StubRes
+    impl ResDesp  for StubRes
     {
         fn res_info(&self) -> String
         {

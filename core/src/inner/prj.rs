@@ -22,7 +22,7 @@ impl Project
 }
 
 
-impl SellDesp for Project
+impl ResDesp for Project
 {
     fn res_info(&self) -> String
     {

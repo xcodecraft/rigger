@@ -23,7 +23,7 @@ impl System
     }
 
 }
-impl SellDesp for System
+impl ResDesp for System
 {
     fn res_info(&self) -> String
     {

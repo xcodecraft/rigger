@@ -31,7 +31,7 @@ impl Loader<Env> for Env
     fn key() -> String { String::from("Env") }
 }
 
-impl SellDesp for Env
+impl ResDesp for Env
 {
     fn res_info(&self) -> String
     {

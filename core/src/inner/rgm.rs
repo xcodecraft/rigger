@@ -20,7 +20,7 @@ impl InnerContainer for RGMain {
     }
 }
 
-impl SellDesp for RGMain
+impl ResDesp for RGMain
 {
     fn res_info(&self) -> String
     {

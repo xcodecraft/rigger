@@ -15,7 +15,7 @@ impl Vars
     }
 }
 
-impl SellDesp for Vars
+impl ResDesp for Vars
 {
     fn res_info(&self) -> String
     {

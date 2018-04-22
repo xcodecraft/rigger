@@ -15,7 +15,7 @@ impl  ResProxy
     }
 }
 
-impl SellDesp for ResProxy
+impl ResDesp for ResProxy
 {
     fn res_info(&self) -> String
     {
