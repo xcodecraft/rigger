@@ -19,7 +19,7 @@ pub mod def ;
 pub mod model ;
 pub mod creator ;
 pub mod parser ;
-mod res ;
+pub mod res ;
 pub mod inner ;
 
 
