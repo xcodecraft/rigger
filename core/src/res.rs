@@ -112,7 +112,7 @@ where T: ResDesp +  InvokeStart + InvokeStop + InvokeHook + Interceptor
 #[macro_export]
 macro_rules! res_info {
     { $res:expr  } => {
-        info!("res {}: {:?}", $res.name(),$res.info()) ;
+        print!("res {}: {:?}", $res.name(),$res.info()) ;
     };
 }
 #[macro_export]

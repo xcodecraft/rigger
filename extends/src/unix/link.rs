@@ -5,6 +5,12 @@ use rg_core::res::*   ;
 use rg_core::creator::* ;
 use std::path::Path ;
 
+//
+///!R.link
+//      src : ""
+//      dst : ""
+//
+//
 #[derive(Debug)]
 pub struct Link
 {
@@ -22,6 +28,19 @@ impl Loader<Link> for Link
     }
     fn key() -> String { String::from("Link") }
 }
+impl ResDesp for Link
+{
+    fn res_info(&self) -> String {
+        format!(
+            r#"!R.link  
+                    src: "{}"
+                    dst: "{}"
+                    "#,self.src,self.dst) 
+    }
+    fn res_name(&self) -> String {
+        Link::key() 
+    }
+}
 
 
 
@@ -31,24 +50,6 @@ impl InvokeStop for Link{
 }
 
 
-impl ResDesp for Link
-{
-    fn res_info(&self) -> String {
-        format!("{:?}",self)
-    }
-    fn res_name(&self) -> String {
-        Link::key() 
-    }
-}
-
-
-#[macro_export]
-macro_rules! ERR{
-    ($args:expr) => ({ return Error::Runtime(String::from($args)) });
-    ($fmt:expr, $($args:tt)*) => ({  
-        return Err(Error::Runtime(format!($fmt,$($args)*)))
-    });
-}
 
 
 impl InvokeStart for Link
@@ -108,7 +109,7 @@ mod tests
     use super::* ;
     //use rg_core::res::* ;
     use rg_core::model::* ;
-    use rg_core::parser::* ;
+    //use rg_core::parser::* ;
     use rg_core::creator::* ;
     use pretty_env_logger ;
     #[test]
@@ -118,8 +119,10 @@ mod tests
        debug!("hello") ;
        let mut god = ResFatory::new() ;
        res_regist(&mut god);
-       let data = map!("dst"  =>"${HOME}/devspace/rigger-nx/extends/meterial/run_ngx.yaml","src" => "${HOME}/devspace/rigger-nx/extends/meterial/run_tpl.yaml") ;
-       let obj  = god.create(&Link::key(),&data ).unwrap();
+       let data  = map!(
+           "dst" =>"${HOME}/devspace/rigger-nx/extends/meterial/run_ngx.yaml",
+           "src" => "${HOME}/devspace/rigger-nx/extends/meterial/run_tpl.yaml") ;
+       let obj   = god.create(&Link::key(),&data ).unwrap();
        res_check(&obj);
     }
 }

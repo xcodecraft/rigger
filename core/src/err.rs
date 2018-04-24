@@ -51,3 +51,11 @@ impl std::convert::From<std::io::Error> for Error
     }
 
 }
+
+#[macro_export]
+macro_rules! ERR{
+    ($args:expr) => ({ return Error::Runtime(String::from($args)) });
+    ($fmt:expr, $($args:tt)*) => ({  
+        return Err(Error::Runtime(format!($fmt,$($args)*)))
+    });
+}
