@@ -1,8 +1,4 @@
-
-use std::result::Result ;
 use std::io::prelude::*;
-use std::fs::File ;
-use std::collections::HashMap ;
 use regex::{ Regex ,Captures };
 use def::StrMap;
 
