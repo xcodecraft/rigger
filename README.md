@@ -1,8 +1,13 @@
-# rigger-nx	
-rigger-ng 的rust版本，直接可以二进制发布	
-	
+# rigger	
+rigger-ng 的rust版本，直接可以二进制发布
+
+rigger-store : 　存储二进制数据
+
+​	
+​	
+
 # 阶段	
-	
+
 当前：设计	
 计划：	
 设计、开发、资源封装、测试、alpha、beta	

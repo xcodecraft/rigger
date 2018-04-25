@@ -104,15 +104,32 @@ where T: ResDesp +  InvokeStart + InvokeStop + InvokeHook + Interceptor
     {
         self.res_info()
     }
+    fn name(&self) ->String
+    {
+        self.res_name()
+    }
+}
+#[macro_export]
+macro_rules! res_info {
+    { $res:expr  } => {
+        print!("res {}: {:?}", $res.name(),$res.info()) ;
+    };
+}
+#[macro_export]
+macro_rules! res_assert {
+    { $ret : expr  } => {
+        assert!($ret.is_ok(),"err:{:?}",$ret);
+    };
 }
 
-pub fn res_check<T>( res :&T) where T : Res
+pub fn res_check<T>( res :&Box<T>) where T : Res + ?Sized 
 {
     let mut c = Context::new() ;
-    assert!(res.conf(  &mut c).is_ok()) ;
-    assert!(res.start( &mut c).is_ok());
-    assert!(res.stop(  &mut c).is_ok()) ;
-    assert!(res.clean( &mut c).is_ok()) ;
+    res_info!(res);
+    res_assert!(res.conf(  &mut c)) ;
+    res_assert!(res.start( &mut c));
+    res_assert!(res.stop(  &mut c)) ;
+    res_assert!(res.clean( &mut c)) ;
 }
 
 
@@ -156,7 +173,7 @@ mod tests
     fn useres_stub()
     {
 
-        let res = StubRes::new();
+        let res = Box::new(StubRes::new());
         res_check(&res) ;
     }
 }

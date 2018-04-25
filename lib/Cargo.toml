@@ -1,5 +1,5 @@
 [package]
-name = "lib"
+name = "rg_lib"
 version = "0.1.0"
 authors = ["zuowenjian <zuowenjian@outlook.com>"]
 
@@ -13,3 +13,4 @@ futures           = "0.1"
 pretty_env_logger = "0.2"
 toml              = "0.4"
 yaml-rust         = "0.4.0"
+regex             = "0.2"

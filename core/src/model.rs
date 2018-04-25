@@ -35,6 +35,7 @@ pub trait Res
     fn check(&self , context : &mut Context ) ->BoolR;
     fn clean(&self , context : &mut Context ) ->BoolR;
     fn info(&self) ->String  ;
+    fn name(&self) ->String  ;
 }
 pub type ResBox = Box<Res> ;
 pub type ResVec = Vec<Box<Res>> ;
