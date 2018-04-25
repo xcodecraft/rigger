@@ -7,8 +7,9 @@ authors = ["zuowenjian <zuowenjian@outlook.com>"]
 [dependencies]
 log               = "0.4.1"
 pretty_env_logger = "0.2"
-rg_core           = { path  = "../core", version    = "*" }
-shells = "0.2"
+rg_core           = { path  = "../core", version = "*" }
+rg_lib            = { path  = "../lib", version  = "*" }
+shells            = "0.2"
 
 
 

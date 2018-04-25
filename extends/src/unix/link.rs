@@ -107,9 +107,7 @@ pub fn  res_regist(f : &mut ResFatory)
 mod tests
 {
     use super::* ;
-    //use rg_core::res::* ;
     use rg_core::model::* ;
-    //use rg_core::parser::* ;
     use rg_core::creator::* ;
     use pretty_env_logger ;
     #[test]
@@ -121,7 +119,7 @@ mod tests
        res_regist(&mut god);
        let data  = map!(
            "dst" =>"${HOME}/devspace/rigger-nx/extends/meterial/run_ngx.yaml",
-           "src" => "${HOME}/devspace/rigger-nx/extends/meterial/run_tpl.yaml") ;
+           "src" =>"${HOME}/devspace/rigger-nx/extends/meterial/run_tpl.yaml") ;
        let obj   = god.create(&Link::key(),&data ).unwrap();
        res_check(&obj);
     }
