@@ -1,15 +1,15 @@
 # rigger	
 # 目标：
 rigger 是跨linux发行平台的程序平台，可以完成：
-程序(二进制数据）发布
-程序存储：　多版本
-程序部署: 灰度升级、安全验证
-程序守护：资源占用少
+- 程序(二进制数据）发布
+- 程序存储：　多版本
+- 程序部署: 灰度升级、安全验证
+- 程序守护：资源占用少
 
 它由以下三部分构成：
-rigger-ship
-rigger-launch 
-rigger-store 
+- rigger-ship
+- rigger-launch 
+- rigger-store 
 ![](https://github.com/xcodecraft/rigger-nx/blob/master/docs/rigger-ng-2.0.035.jpeg)
 ​	
 ​	
