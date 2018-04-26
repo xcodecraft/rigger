@@ -2,8 +2,7 @@ use std ;
 use err ;
 pub type Result<T > = std::result::Result<T, err::Error>;
 pub type BoolR  = std::result::Result<(), err::Error>;
-use std::collections::HashMap ;
-pub type StrMap =  HashMap<String,String> ;
+use rg_lib::StrMap ;
 
 pub trait Mustable
 {
@@ -18,6 +17,7 @@ impl Mustable for StrMap {
 
 }
 
+/*
 #[macro_export]
 macro_rules! map {
     // Empty object.
@@ -41,3 +41,4 @@ macro_rules! map {
      })
 }
 
+*/

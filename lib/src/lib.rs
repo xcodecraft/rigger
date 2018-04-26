@@ -5,8 +5,8 @@ extern crate regex;
 
 mod def ;
 #[macro_use] pub mod macros ;
-pub mod yaml;
-pub mod eexp ;
+mod yaml;
+mod eexp ;
 
 pub use def::StrMap ;
 pub use eexp::EExpress ;

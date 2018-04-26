@@ -1,6 +1,7 @@
 use std::io::prelude::*;
 use regex::{ Regex ,Captures };
 use def::StrMap;
+use std::env ;
 
 pub struct EExpress
 {
@@ -16,6 +17,14 @@ impl EExpress
         let regex = Regex::new(r"(\$\{([[:alnum:]]+)\})").unwrap();
         EExpress{ regex, data  }
     }
+    pub fn from_env() -> EExpress
+    {
+        let mut data = StrMap::new() ;
+        for (key, value) in env::vars() {
+            data.insert(key,value) ;
+        }
+        EExpress::new(data)
+    }
     pub fn evar_val<'a>(&'a self, key : &str) -> Option<&'a String>
     {
          self.data.get(key)
@@ -28,7 +37,11 @@ impl EExpress
          }
          return format!("__NO[{}]__", key) ;
     }
-    pub fn parse(&self, content :&str) -> String
+    pub fn parse(&self, content :&String) -> String
+    {
+        self.parse_str(content.as_str())
+    }
+    pub fn parse_str(&self, content :&str) -> String
     {
         let fun     =  | caps: &Captures| { format!("{}", self.safe_evar_val(&caps[2])) } ;
         String::from(self.regex.replace_all( content,  &fun)) 
