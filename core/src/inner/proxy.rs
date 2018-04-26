@@ -1,7 +1,4 @@
-
-use model::* ;
-use def::* ;
-use res::* ;
+inner_use!() ;
 #[derive(Debug)]
 pub struct ResProxy
 {

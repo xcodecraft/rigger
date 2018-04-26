@@ -1,7 +1,4 @@
-
-use model::* ;
-use def::* ;
-use res::* ;
+inner_use!() ;
 #[derive(Debug)]
 pub struct Vars
 {
@@ -38,46 +35,15 @@ impl ResDesp for Vars
 
 impl InvokeStart for Vars
 {
-    fn res_start(&self,_context : &mut Context) ->BoolR 
+    fn res_conf(&self,context : &mut Context) ->BoolR 
     {
-        Ok(())
-
-    }
-    fn res_conf(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
-
-    }
-    fn res_check(&self,_context : &mut Context) ->BoolR 
-    {
+        for (k,v) in &self.kvmap
+        {
+            context.sset(k.clone(),v.clone());
+        }
         Ok(())
 
     }
 }
-impl InvokeStop for Vars 
-{
-    fn res_stop(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
-
-    }
-    fn res_clean(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
-
-    }
-
-}
-impl InvokeHook for Vars 
-{
-    fn res_before(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
-    }
-
-    fn res_after(&self,_context : &mut Context) ->BoolR 
-    {
-        Ok(())
-
-    }
-}
+impl InvokeStop for Vars { }
+impl InvokeHook for Vars { }

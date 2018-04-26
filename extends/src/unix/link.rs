@@ -1,3 +1,4 @@
+use rg_lib::* ;
 use rg_core::err::*   ;
 use rg_core::def::*   ;
 use rg_core::model::* ;
@@ -42,38 +43,56 @@ impl ResDesp for Link
     }
 }
 
+impl InvokeHook for Link{
+    fn res_before(&self,context : &mut Context) ->BoolR 
+    {
+        
+        let ee = EExpress::from_env();
+        let src = ee.parse(&self.src) ;
+        let dst = ee.parse(&self.dst) ;
+        context.set("src",src);
+        context.set("dst",dst);
+        Ok(())
 
+    }
 
-impl InvokeHook for Link{}
+}
 impl InvokeStop for Link{
 
 }
 
 
-
+impl Link
+{
+    fn clear_link(&self,dst_path: &Path) -> BoolR
+    {
+        if dst_path.read_link().is_ok()
+        {
+            let (code,stdout,stderr )= sh!("unlink {}",self.dst);
+            if code != 0 {
+                ERR!("{:?} {:?} ",stdout,stderr);
+            } 
+            Ok(())
+        }
+        else
+        {
+            ERR!("dst exists {:?}",self.dst);
+        }
+    }
+}
 
 impl InvokeStart for Link
 {
-    fn res_conf(&self,_context : &mut Context) ->BoolR 
+    fn res_conf(&self,context : &mut Context) ->BoolR 
     {
-        let dst_path = Path::new(self.dst.as_str()) ;
-        let src_path = Path::new(self.src.as_str()) ;
+        let dst = context.must_get::<String>("dst") ;
+        let src = context.must_get::<String>("src") ;
+        let dst_path = Path::new(dst.as_str()) ;
+        let src_path = Path::new(src.as_str()) ;
         if dst_path.exists() 
         {
-            if dst_path.read_link().is_ok()
-            {
-                let (code,stdout,stderr )= sh!("unlink {}",self.dst);
-                if code != 0 {
-                    ERR!("{:?} {:?} ",stdout,stderr);
-                } 
-            }
-            else
-            {
-                ERR!("dst exists {:?}",self.dst);
-            }
+            self.clear_link(dst_path) ?
         }
-        //TODO: 
-        /*
         if src_path.exists()
         {
             let parent = dst_path.parent();
@@ -90,9 +109,6 @@ impl InvokeStart for Link
             }
         }
         ERR!("{} not exists",self.src);
-        */
-        Ok(())
-
     }
 }
 
@@ -118,8 +134,8 @@ mod tests
        let mut god = ResFatory::new() ;
        res_regist(&mut god);
        let data  = map!(
-           "dst" =>"${HOME}/devspace/rigger-nx/extends/meterial/run_ngx.yaml",
-           "src" =>"${HOME}/devspace/rigger-nx/extends/meterial/run_tpl.yaml") ;
+           "dst" =>"${HOME}/devspace/rigger/extends/meterial/run_ngx.yaml",
+           "src" =>"${HOME}/devspace/rigger/extends/meterial/run_tpl.yaml") ;
        let obj   = god.create(&Link::key(),&data ).unwrap();
        res_check(&obj);
     }

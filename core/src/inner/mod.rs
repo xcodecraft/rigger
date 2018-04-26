@@ -11,6 +11,8 @@ use parser::* ;
 macro_rules! inner_use{
   ()  =>   {
       #[allow(unused_imports)]
+      use rg_lib::* ;
+      #[allow(unused_imports)]
       use model::* ;
       #[allow(unused_imports)]
       use def::* ;
