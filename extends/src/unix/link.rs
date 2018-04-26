@@ -46,18 +46,24 @@ impl ResDesp for Link
 impl InvokeHook for Link{
     fn res_before(&self,context : &mut Context) ->BoolR 
     {
-        
         let ee = EExpress::from_env();
-        let src = ee.parse(&self.src) ;
-        let dst = ee.parse(&self.dst) ;
-        context.set("src",src);
-        context.set("dst",dst);
+        context.set("src",ee.parse(&self.src));
+        context.set("dst",ee.parse(&self.dst));
         Ok(())
-
     }
 
 }
 impl InvokeStop for Link{
+    fn res_clean(&self,context : &mut Context) ->BoolR 
+    {
+        // context.get::<String>("dst").and_then(
+            // |dst| {
+                // let dst_path = Path::new(dst.clone().as_str()) ;
+                // self.clear_link(dst_path) ;
+                // Ok(())
+            // });
+        Ok(())
+    }
 
 }
 
@@ -112,8 +118,6 @@ impl InvokeStart for Link
     }
 }
 
-
-
 pub fn  res_regist(f : &mut ResFatory)
 {
     regist_creator::<Link>(f) ;
@@ -130,7 +134,6 @@ mod tests
     fn creat_link()
     {
        pretty_env_logger::init();
-       debug!("hello") ;
        let mut god = ResFatory::new() ;
        res_regist(&mut god);
        let data  = map!(
