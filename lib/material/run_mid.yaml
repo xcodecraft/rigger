@@ -47,6 +47,11 @@ __sys:
             - !R.echo
                   _type : "echo"
                   value : "${TEST_CASE}"
+            - !R.exec 
+                  _type : "exec"
+                  daemo : True
+                  args  : "xxx"
+                  pid   : "xxx.pid"
 
     - !R.system
         _type  : "system"

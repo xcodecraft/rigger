@@ -53,6 +53,17 @@ impl Context
     {
         self.must_sget(&String::from(key)) 
     }
+    pub fn get<T>(& self, key :&str)->Option<T>
+        where CtxValue: std::convert::Into<T>
+    {
+        self.sget::<T>(&String::from(key))
+    }
+    pub fn sget<T>(& self, key :&String)->Option<T>
+        where CtxValue: std::convert::Into<T>
+    {
+        self.maps.get(key).and_then( |val| Some(val.clone().into()) )
+    }
+
     pub fn must_sget<T>(& self, key :&String)->T
         where CtxValue: std::convert::Into<T>
     {
