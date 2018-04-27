@@ -39,7 +39,7 @@ impl InvokeStart for Vars
     {
         for (k,v) in &self.kvmap
         {
-            context.sset(k.clone(),v.clone());
+            context.set(k.clone(),v.clone());
         }
         Ok(())
 

@@ -1,4 +1,5 @@
-use err ; use def::* ;
+use err ; 
+use def::* ;
 use std ;
 use std::convert::{From ,Into} ;
 use std::collections::HashMap ;
@@ -14,6 +15,12 @@ impl From<String> for CtxValue{
         CtxValue::Str(val) 
     }
 }
+impl <'a> From<&'a str > for CtxValue{
+    fn from(val: &'a str) -> Self {
+        CtxValue::Str(String::from(val)) 
+    }
+}
+
 impl Into<String> for CtxValue {
     fn into(self) -> String {
         match self 
@@ -34,40 +41,29 @@ impl Context
     pub fn new() -> Context {
         Context{ maps: HashMap::new() }
     }
-    pub fn sset<T>(&mut self,key : String , val : T)
-        where CtxValue: std::convert::From<T> 
+    pub fn set<E,T>(&mut self,k : E, val : T)
+        where String: std::convert::From<E> ,
+        CtxValue: std::convert::From<T> 
     {
+        let key = String::from(k);
         let obj = CtxValue::from(val);
         self.maps.insert(key,obj ) ;
         
     }
-    pub fn set<T>(&mut self,key : &str, val : T)
-        where CtxValue: std::convert::From<T> 
+    pub fn get<E,T>(& self, k :E)->Option<T>
+        where String: std::convert::From<E> ,
+        CtxValue: std::convert::Into<T>
     {
-        let obj = CtxValue::from(val);
-        self.maps.insert(String::from(key),obj ) ;
-        
-    }
-    pub fn must_get<T>(& self, key :&str)->T
-        where CtxValue: std::convert::Into<T>
-    {
-        self.must_sget(&String::from(key)) 
-    }
-    pub fn get<T>(& self, key :&str)->Option<T>
-        where CtxValue: std::convert::Into<T>
-    {
-        self.sget::<T>(&String::from(key))
-    }
-    pub fn sget<T>(& self, key :&String)->Option<T>
-        where CtxValue: std::convert::Into<T>
-    {
-        self.maps.get(key).and_then( |val| Some(val.clone().into()) )
-    }
 
-    pub fn must_sget<T>(& self, key :&String)->T
-        where CtxValue: std::convert::Into<T>
+        let key  = String::from(k) ;
+        self.maps.get(&key).and_then( |val| Some(val.clone().into()) )
+    }
+    pub fn must_get<E,T>(& self, k :E)->T
+        where String: std::convert::From<E> ,
+        CtxValue: std::convert::Into<T>
     {
-        let fund = self.maps.get(key) ;
+        let key  = String::from(k) ;
+        let fund = self.maps.get(&key) ;
         if let Some(val) = fund
         {
             return val.clone().into();
@@ -115,7 +111,11 @@ mod tests
     {
 
         let mut ctx = Context::new();
-        ctx.set("src",format!("hello"));
+        ctx.set("src",format!("hello src"));
+        ctx.set(format!("dst"),"hello dst");
         let src : String = ctx.must_get("src") ;
+        let dst : String = ctx.must_get("dst") ;
+        assert_eq!(src,String::from("hello src")) ;
+        assert_eq!(dst,String::from("hello dst")) ;
     }
 }
