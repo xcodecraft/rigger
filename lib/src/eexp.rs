@@ -2,6 +2,7 @@ use std::io::prelude::*;
 use regex::{ Regex ,Captures };
 use def::StrMap;
 use std::env ;
+use std ;
 
 pub struct EExpress
 {
@@ -37,14 +38,12 @@ impl EExpress
          }
          return format!("__NO[{}]__", key) ;
     }
-    pub fn parse(&self, content :&String) -> String
+    pub fn parse<T>(&self, content :T) -> String
+        where String: std::convert::From<T> 
     {
-        self.parse_str(content.as_str())
-    }
-    pub fn parse_str(&self, content :&str) -> String
-    {
-        let fun     =  | caps: &Captures| { format!("{}", self.safe_evar_val(&caps[2])) } ;
-        String::from(self.regex.replace_all( content,  &fun)) 
+        let strc = String::from(content);
+        let fun  =  | caps: &Captures| { format!("{}", self.safe_evar_val(&caps[2])) } ;
+        self.regex.replace_all( strc.as_str() ,&fun).to_string() 
     }
 }
 
@@ -81,6 +80,7 @@ mod tests
         assert!(ex.parse("${HOME}/bin") != String::from("/home/rigger1/bin"));
         assert_eq!(ex.parse("${HOME}/${USER}/bin"),String::from("/home/rigger/rigger/bin"));
         assert_eq!(ex.parse("${HOME2}"),String::from("__NO[HOME2]__"));
+        assert_eq!(ex.parse(format!("HOME2")),String::from("HOME2"));
     }
 
 }
