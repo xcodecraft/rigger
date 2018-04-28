@@ -63,9 +63,9 @@ impl Keyword
 }
 
 
-pub fn  file_regist(f : &mut ResFatory)
+pub fn  res_regist(f : &mut ResFatory)
 {
-    regist_creator::<Echo>(f) ;
+    regist_res_creator::<Echo>(f) ;
 }
 
 #[cfg(test)]
@@ -78,7 +78,7 @@ mod tests
     fn creat_echo()
     {
        let mut god = ResFatory::new() ;
-       mod_regist(&mut god);
+       mod_res_regist(&mut god);
        let data = map!("value" =>"china") ;
        let obj   = god.create(&String::from("Echo"),&data ).unwrap();
        let mut c = Context::new();

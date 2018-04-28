@@ -120,7 +120,7 @@ impl InvokeStart for Link
 
 pub fn  res_regist(f : &mut ResFatory)
 {
-    regist_creator::<Link>(f) ;
+    regist_res_creator::<Link>(f) ;
 }
 
 #[cfg(test)]

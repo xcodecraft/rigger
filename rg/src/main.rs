@@ -1,25 +1,24 @@
-#[macro_use]
-extern crate log;
+#[macro_use] extern crate log;
 extern crate pretty_env_logger;
-#[macro_use]
-extern crate rg_core;
-
-#[macro_use]
-extern crate clap;
-
+#[macro_use] extern crate rg_core;
+#[macro_use] extern crate clap;
 use clap::{Arg, App};
+
+use rg_core::* ;
+
 
 fn main() {
 	pretty_env_logger::init();
-	//rg_core::rg_main();
-	parse();
+    let mut args = RGArgs::new();
+	args_parse(&mut args);
+    rg_core::rg_main(args);
 }
 
 
-fn parse() {
-	//rg conf start -e dev -s init
-	//rg conf |start|stop|clean
-	//rg rc
+//rg conf start -e dev -s init
+//rg conf |start|stop|clean
+//rg rc
+fn args_parse(args : &mut RGArgs) {
 	let matches = App::new(crate_name!())
 		.version(crate_version!())
 		.author(crate_authors!())
@@ -38,23 +37,17 @@ fn parse() {
 		.arg(Arg::with_name("action")
 			.help("rigger action ")
 			.multiple(true)
-			.possible_values(&["conf", "clean", "start", "stop", "rc"]))
+			.possible_values(&["conf", "clean", "start", "stop", "conf,start"]))
 		.get_matches();
-
-	if let Some(config) = matches.values_of("conf") {
-		let confs = Some(config).unwrap().collect::<Vec<_>>();
-		println!("confs is {:?}", confs);
-	}
-
 	if let Some(config) = matches.value_of("action") {
-		println!("A action is: {}", config);
+        args.act = String::from(config)
 	}
 
 	if let Some(config) = matches.value_of("env") {
-		println!("A env is: {}", config);
+        args.env = String::from(config)
 	}
 
 	if let Some(config) = matches.value_of("system") {
-		println!("A system is: {}", config);
+        args.sys = String::from(config)
 	}
 }

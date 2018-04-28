@@ -107,9 +107,11 @@ impl std::fmt::Debug for Res {
 }
 pub trait  Cmd
 {
-    fn execute(&self,res: ResBox, context : &mut Context);
+    fn execute(&self,res: &ResBox, context : &mut Context) -> BoolR ;
 }
 
+pub type CmdBox = Box<Cmd> ; 
+pub type CmdVec = Vec<Box<Cmd>> ;
 
 
 #[cfg(test)]

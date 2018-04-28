@@ -151,9 +151,9 @@ impl <T> Compose for T  where T: InnerContainer
 }
 
 
-pub fn  mod_regist(f : &mut ResFatory)
+pub fn  mod_res_regist(f : &mut ResFatory)
 {
-    utls::file_regist(f) ;
+    utls::res_regist(f) ;
 }
 
 

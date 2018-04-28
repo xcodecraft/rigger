@@ -20,6 +20,8 @@ pub mod model ;
 pub mod creator ;
 pub mod parser ;
 pub mod res ;
+pub mod cmd ;
+pub mod cmds ;
 pub mod inner ;
 
 
@@ -30,26 +32,76 @@ use parser::* ;
 use creator::* ;
 use inner::rgm::* ;
 use inner::*;
+use cmd:: * ;
+use cmds::* ;
 
-pub fn rg_main()
+#[derive(Debug,Clone)]
+pub struct RGArgs
 {
-    let mut data = vec![
-        ParseResult::inn( RgvType::Env    , map!( "_name" => "dev" ))  ,
-        ParseResult::inn( RgvType::Vars   , map!( "x"     => "256"     , "y" => "24")) ,
-        ParseResult::inn( res_of("Echo")  , map!( "value" => "china")) ,
-        ParseResult::end()                ,
-        ParseResult::inn( RgvType::System , map!( "_name" => "api" ) ) ,
-        ParseResult::inn( RgvType::Vars   , map!( "x"     => "256"     , "y" => "24")) ,
-        ParseResult::end()                ,
-    ];
+    pub  env : String,
+    pub  sys : String,
+    pub  act : String,
+}
+impl RGArgs
+{
+    pub fn new() -> RGArgs
+    {
+        RGArgs{ env : String::new(), sys : String::new() , act: String::new() }
+    }
 
-    let parser : ParserBox = Box::new(StubParser::new(data)) ;
-    let mut god = ResFatory::new() ;
-    mod_regist(&mut god);
-    let mut context        = Context::new();
-    let mut main           = RGMain::new() ;
-    main.build(&parser,&god) ;
-    debug!("main: {:?}", main) ;
-    main.conf(&mut context) ;
+}
+pub struct Rigger
+{
+    parser     : ParserBox,
+    res_factor : ResFatory,
+    cmd_factor : CmdFatory,
 
+}
+impl Rigger{
+
+    pub fn new() -> Rigger
+    {
+        let mut data = vec![
+            ParseResult::inn( RgvType::Env    , map!( "_name" => "dev" ))  ,
+            ParseResult::inn( RgvType::Vars   , map!( "x"     => "256"     , "y" => "24")) ,
+            ParseResult::inn( res_of("Echo")  , map!( "value" => "china")) ,
+            ParseResult::end()                ,
+            ParseResult::inn( RgvType::System , map!( "_name" => "api" ) ) ,
+            ParseResult::inn( RgvType::Vars   , map!( "x"     => "256"     , "y" => "24")) ,
+            ParseResult::end()                ,
+        ];
+        let parser : ParserBox = Box::new(StubParser::new(data)) ;
+        let mut res_factor     = ResFatory::new() ;
+        let mut cmd_factor     = CmdFatory::new() ;
+        mod_cmd_regist(&mut cmd_factor);
+        mod_res_regist(&mut res_factor);
+        Rigger{ parser, res_factor, cmd_factor}
+    }
+
+    pub fn load(&self, main : &mut RGMain ,_conf_file : &String)
+    {
+        main.build(&self.parser,&self.res_factor) ;
+    }
+    pub fn run(&mut self, main :&ResBox,line: String) ->BoolR
+    {
+        let mut context     = Context::new();
+        let cmds: Vec<&str> = line.split(',').collect();
+        for c in cmds 
+        {
+             if let Some(cmd) =  self.cmd_factor.create(&String::from(c))
+             {
+                 cmd.execute(main,&mut context) ? ;
+             }
+        }
+        Ok(())
+
+    }
+}
+pub fn rg_main( args : RGArgs )
+{
+    let mut main = Box::new(RGMain::new()) ;
+    let mut rg   = Rigger::new() ;
+    rg.load(&mut main,&format!("")) ;
+    let res :ResBox = main ;
+    rg.run(&res,args.act) ;
 }
