@@ -17,28 +17,4 @@ impl Mustable for StrMap {
 
 }
 
-/*
-#[macro_export]
-macro_rules! map {
-    // Empty object.
-    {} => ($crate::def::StrMap::new());
 
-    // Non-empty object, no trailing comma.
-    //
-    // In this implementation, key/value pairs separated by commas.
-    { $( $key:expr => $value:expr ),* } => {
-         map!( $( $key => $value, )* )
-    };
-
-    { $( $key:expr => $value:expr, )* } => ({
-        use $crate::def::StrMap;
-        let mut map = StrMap::new();
-        $(
-            map.insert(String::from($key), String::from($value));
-         )*
-        map 
-        //StrMap(map) ;
-     })
-}
-
-*/

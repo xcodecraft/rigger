@@ -91,8 +91,8 @@ impl InvokeStart for Link
 {
     fn res_conf(&self,context : &mut Context) ->BoolR 
     {
-        let dst = context.must_get::<String>("dst") ;
-        let src = context.must_get::<String>("src") ;
+        let dst : String = context.must_get("dst") ;
+        let src : String = context.must_get("src") ;
         let dst_path = Path::new(dst.as_str()) ;
         let src_path = Path::new(src.as_str()) ;
         if dst_path.exists() 
@@ -120,7 +120,7 @@ impl InvokeStart for Link
 
 pub fn  res_regist(f : &mut ResFatory)
 {
-    regist_creator::<Link>(f) ;
+    regist_res_creator::<Link>(f) ;
 }
 
 #[cfg(test)]

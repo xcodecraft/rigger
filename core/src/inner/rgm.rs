@@ -81,12 +81,13 @@ mod tests
 
         let parser : ParserBox = Box::new(StubParser::new(data)) ;
         let mut god = ResFatory::new() ;
-        mod_regist(&mut god);
+        mod_res_regist(&mut god);
         let mut context        = Context::new();
-        let mut main           = RGMain::new() ;
+        let mut main           = Box::new(RGMain::new()) ;
         main.build(&parser,&god) ;
         debug!("main: {:?}", main) ;
-        main.conf(&mut context) ;
+        let main2 : ResBox = main ;
+        main2.conf(&mut context) ;
         //main.start(&mut context) ;
         //main.start();
     }
