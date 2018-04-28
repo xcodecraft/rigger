@@ -1,8 +1,9 @@
 use std::io::prelude::*;
 use regex::{ Regex ,Captures };
-use def::StrMap;
+use def::* ;
 use std::env ;
 use std ;
+use std::convert::{From ,Into} ;
 
 pub struct EExpress
 {
@@ -10,6 +11,7 @@ pub struct EExpress
     data : StrMap,
 
 }
+
 
 impl EExpress
 {
@@ -39,11 +41,11 @@ impl EExpress
          return format!("__NO[{}]__", key) ;
     }
     pub fn parse<T>(&self, content :T) -> String
-        where String: std::convert::From<T> 
+        where UString: std::convert::From<T> 
     {
-        let strc = String::from(content);
+        let strc = UString::from(content);
         let fun  =  | caps: &Captures| { format!("{}", self.safe_evar_val(&caps[2])) } ;
-        self.regex.replace_all( strc.as_str() ,&fun).to_string() 
+        self.regex.replace_all( strc.to_string().as_str() ,&fun).to_string()
     }
 }
 
@@ -81,6 +83,9 @@ mod tests
         assert_eq!(ex.parse("${HOME}/${USER}/bin"),String::from("/home/rigger/rigger/bin"));
         assert_eq!(ex.parse("${HOME2}"),String::from("__NO[HOME2]__"));
         assert_eq!(ex.parse(format!("HOME2")),String::from("HOME2"));
+
+        let content = format!("HOME2") ;
+        assert_eq!(ex.parse(&content),String::from("HOME2"));
     }
 
 }

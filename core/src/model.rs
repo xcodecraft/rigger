@@ -93,12 +93,23 @@ pub trait Res
     fn start(&self , context : &mut Context ) ->BoolR;
     fn stop(&self  , context : &mut Context ) ->BoolR;
     fn check(&self , context : &mut Context ) ->BoolR;
-    fn clean(&self , context : &mut Context ) ->BoolR; fn info(&self) ->String  ; fn name(&self) ->String  ; } pub type ResBox = Box<Res> ; pub type ResVec = Vec<Box<Res>> ; impl std::fmt::Debug for Res {
+    fn clean(&self , context : &mut Context ) ->BoolR; 
+    fn info(&self) ->String  ; fn name(&self) ->String  ; 
+} 
+pub type ResBox = Box<Res> ; 
+pub type ResVec = Vec<Box<Res>> ;
+
+impl std::fmt::Debug for Res {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "info :{}", self.info())
     }
 
 }
+pub trait  Cmd
+{
+    fn execute(&self,res: ResBox, context : &mut Context);
+}
+
 
 
 #[cfg(test)]

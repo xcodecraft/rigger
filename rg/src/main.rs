@@ -11,8 +11,8 @@ use clap::{Arg, App};
 
 fn main() {
 	pretty_env_logger::init();
-	rg_core::rg_main();
-//	parse();
+	//rg_core::rg_main();
+	parse();
 }
 
 
@@ -35,8 +35,8 @@ fn parse() {
 			.long("system")
 			.takes_value(true)
 			.help("system"))
-		.arg(Arg::with_name("conf")
-			.help("rigger conf in project")
+		.arg(Arg::with_name("action")
+			.help("rigger action ")
 			.multiple(true)
 			.possible_values(&["conf", "clean", "start", "stop", "rc"]))
 		.get_matches();
