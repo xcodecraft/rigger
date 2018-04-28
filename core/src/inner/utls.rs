@@ -1,5 +1,4 @@
 inner_use!() ;
-use std::collections::HashMap ;
 
 
 // !R.echo 
@@ -11,7 +10,7 @@ pub struct Echo
     value : String
 
 }
-impl Loader<Echo> for Echo
+impl ResLoader<Echo> for Echo
 {
     fn load( data : &StrMap) -> Echo
     {

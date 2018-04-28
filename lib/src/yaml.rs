@@ -13,6 +13,7 @@ impl ConfParser
 {
     pub fn parse_file(conf_file : &str) ->Result<Vec<Yaml>, ScanError>
     {
+        debug!("parse file:{} ", conf_file);
         let mut file = File::open(conf_file).unwrap();
         let mut contents = String::new();
         file.read_to_string(&mut contents).unwrap();

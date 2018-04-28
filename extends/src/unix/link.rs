@@ -19,7 +19,7 @@ pub struct Link
     dst: String,
 
 }
-impl Loader<Link> for Link
+impl ResLoader<Link> for Link
 {
     fn load( data : &StrMap) -> Link
     {
@@ -54,7 +54,7 @@ impl InvokeHook for Link{
 
 }
 impl InvokeStop for Link{
-    fn res_clean(&self,context : &mut Context) ->BoolR 
+    fn res_clean(&self,_context : &mut Context) ->BoolR 
     {
         // context.get::<String>("dst").and_then(
             // |dst| {
@@ -127,8 +127,6 @@ pub fn  res_regist(f : &mut ResFatory)
 mod tests
 {
     use super::* ;
-    use rg_core::model::* ;
-    use rg_core::creator::* ;
     use pretty_env_logger ;
     #[test]
     fn creat_link()

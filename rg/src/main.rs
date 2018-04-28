@@ -1,6 +1,6 @@
 #[macro_use] extern crate log;
 extern crate pretty_env_logger;
-#[macro_use] extern crate rg_core;
+extern crate rg_core;
 #[macro_use] extern crate clap;
 use clap::{Arg, App};
 
@@ -8,6 +8,7 @@ use rg_core::* ;
 
 
 fn main() {
+    info!("rg runing") ;
 	pretty_env_logger::init();
     let mut args = RGArgs::new();
 	args_parse(&mut args);

@@ -2,11 +2,7 @@
 extern crate log;
 extern crate pretty_env_logger;
 
-#[macro_use]
-extern crate serde_derive;
-extern crate serde;
-extern crate serde_json;
-#[macro_use] extern crate lazy_static;
+//#[macro_use] extern crate lazy_static;
 #[macro_use] extern crate rg_lib ;
 
 extern crate toml;
@@ -25,14 +21,12 @@ pub mod cmds ;
 pub mod inner ;
 
 
-use err::* ;
 use def::* ;
 use model::* ;
 use parser::* ;
 use creator::* ;
 use inner::rgm::* ;
 use inner::*;
-use cmd:: * ;
 use cmds::* ;
 
 #[derive(Debug,Clone)]
@@ -61,7 +55,7 @@ impl Rigger{
 
     pub fn new() -> Rigger
     {
-        let mut data = vec![
+        let data = vec![
             ParseResult::inn( RgvType::Env    , map!( "_name" => "dev" ))  ,
             ParseResult::inn( RgvType::Vars   , map!( "x"     => "256"     , "y" => "24")) ,
             ParseResult::inn( res_of("Echo")  , map!( "value" => "china")) ,
@@ -103,5 +97,8 @@ pub fn rg_main( args : RGArgs )
     let mut rg   = Rigger::new() ;
     rg.load(&mut main,&format!("")) ;
     let res :ResBox = main ;
-    rg.run(&res,args.act) ;
+    if let Err(e) = rg.run(&res,args.act)
+    {
+        warn!("err: {:?}",e) ;
+    }
 }

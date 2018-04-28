@@ -4,12 +4,13 @@ pub struct ResProxy
 {
 }
 
-impl  ResProxy
+impl ResLoader<ResProxy> for   ResProxy
 {
-    pub fn load( data : StrMap) -> ResProxy
+    fn load( _data : &StrMap) -> ResProxy
     {
         ResProxy{}
     }
+    fn key() ->String { String::from("res")} 
 }
 
 impl ResDesp for ResProxy

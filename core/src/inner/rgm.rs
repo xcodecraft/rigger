@@ -62,13 +62,12 @@ mod tests
     use super::* ;
     use model::* ;
     use parser::* ;
-    use std::cell::RefCell;
     use pretty_env_logger ;
     #[test]
     fn use_it()
     {
         pretty_env_logger::init();
-        let mut data = vec![
+        let data = vec![
             ParseResult::inn( RgvType::Env    , map!( "_name" => "dev" ))  ,
             ParseResult::inn( RgvType::Vars   , map!( "x"     => "256"     , "y" => "24")) ,
             ParseResult::inn( res_of("Echo")  , map!( "value" => "china")) ,
@@ -87,7 +86,7 @@ mod tests
         main.build(&parser,&god) ;
         debug!("main: {:?}", main) ;
         let main2 : ResBox = main ;
-        main2.conf(&mut context) ;
+        main2.conf(&mut context).unwrap() ;
         //main.start(&mut context) ;
         //main.start();
     }
