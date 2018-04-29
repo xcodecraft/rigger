@@ -1,9 +1,10 @@
+#[allow(unused_imports)]
 use std::io::prelude::*;
 use regex::{ Regex ,Captures };
 use def::* ;
 use std::env ;
 use std ;
-use std::convert::{From ,Into} ;
+use std::convert::{From } ;
 
 pub struct EExpress
 {
@@ -53,7 +54,6 @@ impl EExpress
 mod tests
 {
     use super::* ;
-    use pretty_env_logger ;
     #[test]
     pub fn regex_verif()
     {

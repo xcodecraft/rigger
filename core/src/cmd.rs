@@ -1,7 +1,6 @@
-use rg_lib::* ;
-use err ;
-use def::* ;
 use model::* ;
+#[allow(unused_imports)]
+use def::{BoolR} ;
 
 pub trait CmdDesp
 {
@@ -46,6 +45,8 @@ mod tests
     {
         fn execute(&self,res: &ResBox, context : &mut Context) -> BoolR
         {
+            res.conf(context)? ;
+            res.start(context)? ;
             Ok(())
         }
     }

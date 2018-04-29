@@ -66,7 +66,12 @@ impl <T> InvokeStart for T where T: InnerContainer
     fn res_check(&self,context : &mut Context) ->BoolR 
     {
         let resvec = &*self.resvec_hold() ;
-        for res in resvec { res.check(context) ; }
+        for res in resvec { 
+            if let Err(e) = res.check(context) 
+            {
+                warn!("check {} err : {:?}",res.name(), e) ;
+            }
+        }
         Ok(())
 
     }
@@ -85,7 +90,13 @@ impl <T> InvokeStop for T where T: InnerContainer
     {
         let resvec = &*self.resvec_hold();
         //resvec.reverse();
-        for res in resvec { res.clean(context) ; }
+        for res in resvec { 
+            if let Err(e) =  res.clean(context) 
+            {
+                warn!("res {} clean err: {:?}", res.name(),e) ;
+            }
+
+        }
         Ok(())
 
     }

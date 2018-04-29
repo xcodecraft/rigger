@@ -1,4 +1,3 @@
-use err ; 
 use def::* ;
 use std ;
 use std::convert::{From ,Into} ;
@@ -7,7 +6,7 @@ use std::collections::HashMap ;
 pub enum  CtxValue
 {
     Str(String),
-    f64(f64),
+    F64(f64),
 }
 
 impl From<String> for CtxValue{

@@ -1,10 +1,10 @@
 use rg_lib::* ;
 use model::* ;
 use res::* ;
-use cmd::* ;
-use def::* ;
+use cmd::{ CmdDesp } ;
 use std::collections::HashMap ;
-pub trait Loader <T> {
+
+pub trait ResLoader <T> {
     fn load( data : &StrMap) -> T ;
     fn key() -> String ;
 }
@@ -41,7 +41,7 @@ impl ResFatory
 }
 
 pub fn res_createor_impl<T>(key :&String, data : &StrMap) -> Option<Box<Res>>
-    where T: Loader<T> + ResDesp   + InvokeHook + InvokeStart + InvokeStop + 'static
+    where T: ResLoader<T> + ResDesp   + InvokeHook + InvokeStart + InvokeStop + 'static
 {
     if *key == T::key()
     {
@@ -52,7 +52,7 @@ pub fn res_createor_impl<T>(key :&String, data : &StrMap) -> Option<Box<Res>>
 }
 
 pub fn regist_res_creator<T>(f : &mut ResFatory)
-    where T: Loader<T> + ResDesp   + InvokeHook + InvokeStart + InvokeStop + 'static
+    where T: ResLoader<T> + ResDesp   + InvokeHook + InvokeStart + InvokeStop + 'static
 {
      let fnobj : ResCreator = res_createor_impl::<T> ;
      f.regist(T::key(),fnobj) ;

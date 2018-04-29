@@ -16,15 +16,15 @@ impl Env
     }
 
 }
-impl Loader<Env> for Env
+impl ResLoader<Env> for Env
 {
 
     fn load(data: &StrMap ) ->Env
     {
         let name    = data.must_get(&String::from("_name")) ;
-        let mut env = Env::new(name.clone()) ;
-        data.get(&String::from("_mix")).ok_or(0)
-            .and_then(|mix | Ok(env.mix.push(mix.clone()))) ; 
+        let env = Env::new(name.clone()) ;
+        // data.get(&String::from("_mix")).ok_or(0)
+            // .and_then(|mix | Ok(env.mix.push(mix.clone()))) ;
         return env ;
 
     }

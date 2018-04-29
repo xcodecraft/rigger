@@ -1,5 +1,3 @@
-use rg_lib::* ;
-use err ;
 use def::* ;
 use model::* ;
 
@@ -26,7 +24,7 @@ pub trait InvokeStop
     fn res_stop(&self,_context  : &mut Context) ->BoolR { Ok(()) }
     fn res_clean(&self,_context : &mut Context) ->BoolR { Ok(()) }
 }
-trait  Interceptor
+pub trait  Interceptor
 {
     fn do_before(&self , context : &mut Context ) ->BoolR ;
     fn do_after(&self  , context : &mut Context ) ->BoolR ;
@@ -140,7 +138,6 @@ pub fn res_check<T>( res :&Box<T>) where T : Res + ?Sized
 mod tests
 {
     use super::* ;
-    use pretty_env_logger ;
 
     struct StubRes {
     }
