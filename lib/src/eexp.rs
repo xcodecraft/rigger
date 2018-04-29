@@ -18,7 +18,7 @@ impl EExpress
 {
     pub fn new(data : StrMap ) -> EExpress
     {
-        let regex = Regex::new(r"(\$\{([[:alnum:]]+)\})").unwrap();
+        let regex = Regex::new(r"(\$\{([[:alnum:]_]+)\})").unwrap();
         EExpress{ regex, data  }
     }
     pub fn from_env() -> EExpress
@@ -29,8 +29,21 @@ impl EExpress
         }
         EExpress::new(data)
     }
+    pub fn from_env_mix(map :StrMap) -> EExpress
+    {
+        let mut data = StrMap::new() ;
+        for (key, value) in env::vars() {
+            data.insert(key,value) ;
+        }
+        for (key,value) in map {
+            data.insert(key,value) ;
+        }
+        //debug!("map data :{:?}", data);
+        EExpress::new(data)
+    }
     pub fn evar_val<'a>(&'a self, key : &str) -> Option<&'a String>
     {
+         debug!("found key {:?}", key);
          self.data.get(key)
     }
     pub fn safe_evar_val(& self, key : &str) -> String
@@ -45,6 +58,7 @@ impl EExpress
         where UString: std::convert::From<T> 
     {
         let strc = UString::from(content);
+        debug!("found {:?}", strc);
         let fun  =  | caps: &Captures| { format!("{}", self.safe_evar_val(&caps[2])) } ;
         self.regex.replace_all( strc.to_string().as_str() ,&fun).to_string()
     }
@@ -86,6 +100,18 @@ mod tests
 
         let content = format!("HOME2") ;
         assert_eq!(ex.parse(&content),String::from("HOME2"));
+    }
+    #[test]
+    pub fn evar_verif2()
+    {
+        let data = map!( 
+            "HOME"      => "/home/rigger",
+            "USER"      => "rigger",
+            "CUR_DIR"   => "/home",
+            );
+        let ex = EExpress::from_env_mix(data);
+        assert_eq!(ex.parse("${HOME}/bin"),String::from("/home/rigger/bin"));
+        assert_eq!(ex.parse("${CUR_DIR}/bin"),String::from("/home/bin"));
     }
 
 }

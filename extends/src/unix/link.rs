@@ -46,7 +46,7 @@ impl ResDesp for Link
 impl InvokeHook for Link{
     fn res_before(&self,context : &mut Context) ->BoolR 
     {
-        let ee = EExpress::from_env();
+        let ee = EExpress::from_env_mix(context.to_map());
         context.set("src",ee.parse(&self.src));
         context.set("dst",ee.parse(&self.dst));
         Ok(())
@@ -74,7 +74,7 @@ impl Link
     {
         if dst_path.read_link().is_ok()
         {
-            let (code,stdout,stderr )= sh!("unlink {}",self.dst);
+            let (code,stdout,stderr )= sh!("unlink {}",dst_path.to_str().unwrap());
             if code != 0 {
                 ERR!("{:?} {:?} ",stdout,stderr);
             } 
@@ -82,7 +82,7 @@ impl Link
         }
         else
         {
-            ERR!("dst exists {:?}",self.dst);
+            ERR!("dst exists {:?}",dst_path);
         }
     }
 }
@@ -95,6 +95,8 @@ impl InvokeStart for Link
         let src : String = context.must_get("src") ;
         let dst_path = Path::new(dst.as_str()) ;
         let src_path = Path::new(src.as_str()) ;
+        debug!("dst {:?}", dst_path);
+        debug!("src {:?}", src_path);
         if dst_path.exists() 
         {
             self.clear_link(dst_path) ?
@@ -106,7 +108,10 @@ impl InvokeStart for Link
             if let Some(p) = parent { 
                 if let  Some(f) = f_name
                 {
-                    let (code,stdout,stderr )= sh!("cd {:?} ; ln -s {} {:?}", p.as_os_str(),self.src, f) ;
+                    // debug!("cd {:?} ; ln -s {} {}",
+                           // p.as_os_str(),src_path.to_str().unwrap(), f.to_str().unwrap()) ;
+                    let (code,stdout,stderr )= sh!("cd {:?} ; ln -s {} {}", 
+                       p.to_str().unwrap(),src_path.to_str().unwrap(), f.to_str().unwrap()) ;
                     if code != 0 {
                         ERR!("{:?} {:?} ",stdout,stderr);
                     } 
@@ -114,7 +119,7 @@ impl InvokeStart for Link
                 }
             }
         }
-        ERR!("{} not exists",self.src);
+        ERR!("{} not exists",src_path.to_str().unwrap());
     }
 }
 
@@ -127,17 +132,22 @@ pub fn  res_regist(f : &mut ResFatory)
 mod tests
 {
     use super::* ;
+    use std::env ;
     use pretty_env_logger ;
     #[test]
     fn creat_link()
     {
-       pretty_env_logger::init();
-       let mut god = ResFatory::new() ;
-       res_regist(&mut god);
-       let data  = map!(
-           "dst" =>"${HOME}/devspace/rigger/extends/meterial/run_ngx.yaml",
-           "src" =>"${HOME}/devspace/rigger/extends/meterial/run_tpl.yaml") ;
-       let obj   = god.create(&Link::key(),&data ).unwrap();
-       res_check(&obj);
+        pretty_env_logger::init();
+        let mut god = ResFatory::new() ;
+        res_regist(&mut god);
+        let path = env::current_dir().unwrap();
+        let mut c = Context::new() ;
+        c.set("CUR_DIR",path.into_os_string().into_string().unwrap());
+        //c.set("CUR_DIR","/home/zuowenjian/devspace/rigger/");
+        let data  = map!(
+            "dst" =>"${CUR_DIR}/meterial/run_ngx.yaml",
+            "src" =>"${CUR_DIR}/meterial/run_tpl.yaml") ;
+        let obj   = god.create(&Link::key(),&data ).unwrap();
+        res_check(&obj,c);
     }
 }

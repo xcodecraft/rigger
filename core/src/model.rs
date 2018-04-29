@@ -1,4 +1,6 @@
 use def::* ;
+use rg_lib::StrMap ;
+use err::* ;
 use std ;
 use std::convert::{From ,Into} ;
 use std::collections::HashMap ;
@@ -7,6 +9,18 @@ pub enum  CtxValue
 {
     Str(String),
     F64(f64),
+}
+
+impl CtxValue 
+{
+    pub fn to_string(&self) -> Result< String>
+    {
+        match *self
+        {
+            CtxValue::Str(ref v) => Ok(v.clone()),
+            _  => Err(Error::Non),
+        }
+    }
 }
 
 impl From<String> for CtxValue{
@@ -48,6 +62,18 @@ impl Context
         let obj = CtxValue::from(val);
         self.maps.insert(key,obj ) ;
         
+    }
+    pub fn to_map(&self) -> StrMap
+    {
+        let mut map = StrMap::new() ;
+        for (k,v) in &self.maps
+        {
+            if let Err(e) = v.to_string().and_then( | vstr |  Ok(map.insert(k.clone(),vstr))) 
+            {
+                debug!("Context::to_map err : {:?}",e) ;
+            }
+        }
+        map
     }
     pub fn get<E,T>(& self, k :E)->Option<T>
         where String: std::convert::From<E> ,

@@ -120,9 +120,8 @@ macro_rules! res_assert {
     };
 }
 
-pub fn res_check<T>( res :&Box<T>) where T : Res + ?Sized 
+pub fn res_check<T>( res :&Box<T>, mut c : Context) where T : Res + ?Sized 
 {
-    let mut c = Context::new() ;
     res_info!(res);
     res_assert!(res.conf(  &mut c)) ;
     res_assert!(res.start( &mut c));
@@ -171,6 +170,7 @@ mod tests
     {
 
         let res = Box::new(StubRes::new());
-        res_check(&res) ;
+        let c =  Context::new();
+        res_check(&res,c) ;
     }
 }
