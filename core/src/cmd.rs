@@ -1,4 +1,5 @@
 use model::* ;
+#[allow(unused_imports)]
 use def::{BoolR} ;
 
 pub trait CmdDesp

@@ -1,17 +1,21 @@
 
 extern crate yaml_rust;
 use std::result::Result ;
-use std::io::prelude::*;
 use std::fs::File ;
-use self::yaml_rust::{YamlLoader,ScanError,yaml,Yaml };
+#[allow(unused_imports)]
+use std::io::prelude::* ;
+use self::yaml_rust::{YamlLoader,ScanError,Yaml };
 
+#[allow(dead_code)]
 pub type YamlVec =  Vec<Yaml> ;
+#[allow(dead_code)]
 struct ConfParser
 {
 }
 impl ConfParser 
 {
-    pub fn parse_file(conf_file : &str) ->Result<Vec<Yaml>, ScanError>
+    #[allow(dead_code)]
+    pub fn parse_file(conf_file : &str) ->Result<YamlVec, ScanError>
     {
         debug!("parse file:{} ", conf_file);
         let mut file = File::open(conf_file).unwrap();
@@ -25,10 +29,9 @@ impl ConfParser
 mod tests
 {
     use super::* ;
+    #[allow(unused_imports)]
     use pretty_env_logger ;
-    struct StubParser
-    {
-    }
+    use self::yaml_rust::{yaml };
     #[test]
     pub fn load_yaml()
     {

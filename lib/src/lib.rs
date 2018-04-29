@@ -1,5 +1,5 @@
-#[macro_use]
-extern crate log;
+#[macro_use] extern crate log;
+#[allow(unused_imports)]
 extern crate pretty_env_logger;
 extern crate regex;
 

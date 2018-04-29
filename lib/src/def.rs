@@ -1,5 +1,5 @@
 use std::collections::HashMap ;
-use std::convert::{From ,Into} ;
+use std::convert::{From } ;
 pub type StrMap =  HashMap<String,String> ;
 
 
@@ -33,7 +33,6 @@ impl <'a> From<&'a String> for UString {
 mod tests
 {
     use super::* ;
-    use pretty_env_logger ;
 
     fn use_ustr<T>(val :T)
         where UString : From<T> 

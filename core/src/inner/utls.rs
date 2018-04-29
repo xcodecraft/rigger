@@ -72,15 +72,14 @@ mod tests
 {
     use super::* ;
     use model::* ;
-    use parser::* ;
     #[test]
     fn creat_echo()
     {
        let mut god = ResFatory::new() ;
        mod_res_regist(&mut god);
-       let data = map!("value" =>"china") ;
+       let data  = map!("value" =>"china") ;
        let obj   = god.create(&String::from("Echo"),&data ).unwrap();
        let mut c = Context::new();
-       obj.conf(&mut c);
+       obj.conf(&mut c).unwrap();
     }
 }
