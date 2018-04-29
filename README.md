@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/xcodecraft/rigger.svg?branch=master)](https://travis-ci.org/xcodecraft/rigger)
 # rigger	
 # 目标：
 rigger 是跨linux发行平台的程序平台，可以完成：
