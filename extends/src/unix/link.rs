@@ -54,14 +54,13 @@ impl InvokeHook for Link{
 
 }
 impl InvokeStop for Link{
-    fn res_clean(&self,_context : &mut Context) ->BoolR 
+    fn res_clean(&self,context : &mut Context) ->BoolR 
     {
-        // context.get::<String>("dst").and_then(
-            // |dst| {
-                // let dst_path = Path::new(dst.clone().as_str()) ;
-                // self.clear_link(dst_path) ;
-                // Ok(())
-            // });
+        let dst : String = context.must_get("dst") ;
+        let dst_path     = Path::new(dst.as_str()) ;
+        if dst_path.exists() {
+            self.clear_link(dst_path) ?
+        }
         Ok(())
     }
 
@@ -74,7 +73,7 @@ impl Link
     {
         if dst_path.read_link().is_ok()
         {
-            let (code,stdout,stderr )= sh!("unlink {}",dst_path.to_str().unwrap());
+            let (code,stdout,stderr )= rg_sh!("unlink {}",dst_path.to_str().unwrap());
             if code != 0 {
                 ERR!("{:?} {:?} ",stdout,stderr);
             } 
@@ -87,6 +86,8 @@ impl Link
     }
 }
 
+
+
 impl InvokeStart for Link
 {
     fn res_conf(&self,context : &mut Context) ->BoolR 
@@ -97,8 +98,7 @@ impl InvokeStart for Link
         let src_path = Path::new(src.as_str()) ;
         debug!("dst {:?}", dst_path);
         debug!("src {:?}", src_path);
-        if dst_path.exists() 
-        {
+        if dst_path.exists() {
             self.clear_link(dst_path) ?
         }
         if src_path.exists()
@@ -108,9 +108,7 @@ impl InvokeStart for Link
             if let Some(p) = parent { 
                 if let  Some(f) = f_name
                 {
-                    // debug!("cd {:?} ; ln -s {} {}",
-                           // p.as_os_str(),src_path.to_str().unwrap(), f.to_str().unwrap()) ;
-                    let (code,stdout,stderr )= sh!("cd {:?} ; ln -s {} {}", 
+                    let (code,stdout,stderr )= rg_sh!("cd {:?} ; ln -s {} {}", 
                        p.to_str().unwrap(),src_path.to_str().unwrap(), f.to_str().unwrap()) ;
                     if code != 0 {
                         ERR!("{:?} {:?} ",stdout,stderr);
@@ -143,7 +141,6 @@ mod tests
         let path = env::current_dir().unwrap();
         let mut c = Context::new() ;
         c.set("CUR_DIR",path.into_os_string().into_string().unwrap());
-        //c.set("CUR_DIR","/home/zuowenjian/devspace/rigger/");
         let data  = map!(
             "dst" =>"${CUR_DIR}/meterial/run_ngx.yaml",
             "src" =>"${CUR_DIR}/meterial/run_tpl.yaml") ;

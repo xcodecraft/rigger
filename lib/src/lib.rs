@@ -2,6 +2,8 @@
 #[allow(unused_imports)]
 extern crate pretty_env_logger;
 extern crate regex;
+#[allow(unused_imports)]
+extern crate shells ;
 
 mod def ;
 #[macro_use] pub mod macros ;
