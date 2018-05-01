@@ -16,3 +16,11 @@ macro_rules! map {
      })
 }
 
+#[macro_export]
+macro_rules! rg_sh {
+    ( $( $cmd:tt )* ) => {{
+        info!($($cmd)*) ;
+        use shells ;
+        shells::execute_with("sh", &format!($( $cmd )*))
+    }};
+}
