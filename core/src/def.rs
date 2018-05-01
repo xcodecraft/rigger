@@ -6,13 +6,13 @@ use rg_lib::StrMap ;
 
 pub trait Mustable
 {
-    fn must_get<'a,T>(&'a self,key : &String)-> &'a String  ;
+    fn must_get<'a>(&'a self,key : &String)-> &'a String  ;
 }
 impl Mustable for StrMap {
 
-    fn must_get<'a,T>(&'a self,key : &String)-> &'a String 
+    fn must_get<'a>(&'a self,key : &String)-> &'a String 
     {
-        return self.get(key).expect(format!("{} not get {} value",T::key(),key).as_str()) ;
+        return self.get(key).expect(format!("not get {} value",key).as_str()) ;
     }
 
 }
