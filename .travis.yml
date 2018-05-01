@@ -6,15 +6,13 @@ rust:
 matrix:
   allow_failures:
     - rust: nightly
-  fast_finish: true
-cache: cargo
-dist : trusty
-
-addons:
-  sonarcloud:
-    organization: "sonarcloud_organization_key" # the key of the org you chose at step #3
-    token:
-      secure: "C+uwivLIoKknCAeRw6ZN4/5QHzDnFYa2/kTGK7+m28C7dJ4Hz/qPMF+iftbGl88/EKfRyWuLUkoLsdACQqXVkKrTuTmonCLhPkm4gyFar4jxWlRQwbGPkiZe07+7cxPKjyi52Uk8fUCUcEeen/r/hSRykfMrvJMbxwSaIIoHm5BUeKpUJD0U+y9pN4LdRRQAL4jAmJf0wDQxzHIKyG0pTaXSHpKb6gUvkLrNiyFIPV+rrdAd8keIAMpsaLUjOxmoi3fISQrQ1JjRQstp7Pop0AwL/pJau5YDODltKNsLAi5Z43fmRFAMopwe/gE7CBR0KqcBQLx+Gc+RvADfPequjh95BVdrMl9dlpsK5tVYd8BVU+gLf6SVUIYsG5VxZaLtm9kfhYPP1rcISQpATUq+R1uolqiQtqJ2eN6Ghz48nDyQuLEuz99S6Sk7HjRRu2q4ng7DzlrB/hIFQ4lRViD4fGeRXNQ/rAGwTCZ/fbRE1ij/aFUIavOHJfGAPKsiDjeLYghiQq5CYlYJfGmlCen0Xgwcb5/Tbj6Asis4YnEzZ9/zoZPThtK/2qVJ/jxlUfdTXyVenmYaBFnLP2sCZEJuwUGrpcbWcr2NATAq4bsQDE9UEa5j0wBasG9ToPJhnprrX3qbMroEB1HPod4pmMrmpi/IeS6fzMuQvkYn44QUlek="
-script:
-  # other script steps might be done before running the actual analysis
-  - sonar-scanner
+      fast_finish: true
+      cache: cargo
+      dist: trusty
+      addons:
+        sonarcloud:
+          organization: "xcodecraft"
+          token:
+            secure: "vS1jPLlj23lWarUAVy2ST/v28ivHs6nCEmgwbA4Tr2/hb94tfs3Ceo2y/NvHzJ0xt3xeesXG3NllVVr56jPAmDTn3Vot/3le0wTOLPMZSOlZ11uajsN3z15A6W3SGmG3DaIMfGf6ff/JpozTMsngoVtisGNVun9nj6i2O59IxqZgODI2lcH3FvtTsXyRecWwT/DMaWD/BZHzUV0X5uJA14HozfTjrIOh4wVUCGOXu5H946oVl9/adl3SovYoMc4ZEXC+jZfvu88IVy3ZaPdj2+0QOzshwLD2Q7kVndWL2Xekbvc/w/MTdSqwOaCqLnKUH4nP8UZYUL8ugvSYwle2VNbeiSODGOnWsSaVw9q06ar/7PS7HNWWRYmz2QFmXwxd869B1/7dPDPSqZOOXJ4PM+Rvhq8vzDXarMdxWddmwTORsEqqayRQDnM1iZMHLUKMR/2UV/Gh+xtnot5IEwJDzrGqQ3UGTtsbtPjD+4NVG8IGbmolKoCG+j58NK9vZxLncXLTSqWzjmNG6CO9bttRIZtH/Vrr90g4cD27OioKkuyx15aGcfgOs0CTHdKUC4AdxO3ph6DXj0Tazqebjs9zmdziLPJW0O7/sXutI1fXrMl3hVNxSgyX5mchfNL0m3BD/Z/Sd5fbDINMFih/drqlqf3oGkJpVt2/01HaqmgADrk="
+            script:
+              - sonar-scanner
