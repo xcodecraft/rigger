@@ -19,6 +19,11 @@ pub type CmdCreator = fn(key :&String ) ->  Option<Box<Cmd>>  ;
 type ResCreatorMap = HashMap<String,ResCreator> ; 
 type CmdCreatorMap = HashMap<String,CmdCreator> ; 
 
+pub fn prop_get<T: ResLoader<T>>(data : &StrMap, key : &str )  -> String
+{
+    data.get(key).expect(format!("({}) init prop ({})  failed!",T::key(),key).as_str()).clone()
+}
+
 pub struct ResFatory
 {
     creators : ResCreatorMap,

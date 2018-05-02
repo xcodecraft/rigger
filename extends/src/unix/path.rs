@@ -15,11 +15,12 @@ pub struct Path
     dst: String,
 
 }
+
 impl ResLoader<Path> for Path
 {
     fn load( data : &StrMap) -> Path
     {
-        let dst = data.must_get(&String::from("dst")).clone() ;
+        let dst = prop_get::<Path>(data,"dst")  ;
         Path{ dst} 
     }
     fn key() -> String { String::from("Path") }
@@ -32,9 +33,7 @@ impl ResDesp for Path
                     dst: "{}"
                     "#,self.dst) 
     }
-    fn res_name(&self) -> String {
-        Path::key() 
-    }
+    fn res_name(&self) -> String { Path::key() }
 }
 
 impl InvokeHook for Path{
@@ -46,18 +45,18 @@ impl InvokeHook for Path{
     }
 
 }
-impl InvokeStop for Path{
+impl InvokeStop for Path {
     fn res_clean(&self,context : &mut Context) ->BoolR 
     {
 
-        let line: String = context.must_get("dst") ;
+        let line: String     = context.must_get("dst") ;
         let dst_v: Vec<&str> = line.split(',').collect();
         for dst in dst_v
         {
-            let (code,stdout,stderr )= rg_sh!("rm -rf {}", dst ) ;
+            let (code,stdout,stderr ) = rg_sh!("rm -rf {}", dst ) ;
             if code != 0 {
                 ERR!("{:?} {:?} ",stdout,stderr);
-            } 
+            }
         }
         return Ok(()) ;
     }
@@ -65,17 +64,13 @@ impl InvokeStop for Path{
 }
 
 
-impl Path
-{
-}
-
 
 
 impl InvokeStart for Path
 {
     fn res_conf(&self,context : &mut Context) ->BoolR 
     {
-        let line: String = context.must_get("dst") ;
+        let line: String     = context.must_get("dst") ;
         let dst_v: Vec<&str> = line.split(',').collect();
         for dst in dst_v
         {
@@ -88,8 +83,7 @@ impl InvokeStart for Path
     }
 }
 
-pub fn  res_regist(f : &mut ResFatory)
-{
+pub fn  res_regist(f : &mut ResFatory) {
     regist_res_creator::<Path>(f) ;
 }
 
@@ -107,7 +101,7 @@ mod tests
         let mut c = Context::new() ;
         c.set("CUR_DIR",path.into_os_string().into_string().unwrap());
         let data  = map!(
-            "dist" =>"${CUR_DIR}/meterial/a,${CUR_DIR}/meterial/b",
+            "dst" =>"${CUR_DIR}/meterial/a,${CUR_DIR}/meterial/b",
             );
         let obj   = god.create(&Path::key(),&data ).unwrap();
         res_check(&obj,c);

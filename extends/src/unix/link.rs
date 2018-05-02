@@ -23,8 +23,9 @@ impl ResLoader<Link> for Link
 {
     fn load( data : &StrMap) -> Link
     {
-        let dst = data.must_get(&String::from("dst")).clone() ;
-        let src = data.must_get(&String::from("src")).clone() ;
+        let dst = prop_get::<Link>(data,"dst")  ;
+        let src = prop_get::<Link>(data,"src")  ;
+
         Link{ src, dst} 
     }
     fn key() -> String { String::from("Link") }
@@ -58,9 +59,7 @@ impl InvokeStop for Link{
     {
         let dst : String = context.must_get("dst") ;
         let dst_path     = Path::new(dst.as_str()) ;
-        if dst_path.exists() {
-            self.clear_link(dst_path) ?
-        }
+        if dst_path.exists() { self.clear_link(dst_path) ? }
         Ok(())
     }
 
@@ -94,8 +93,8 @@ impl InvokeStart for Link
     {
         let dst : String = context.must_get("dst") ;
         let src : String = context.must_get("src") ;
-        let dst_path = Path::new(dst.as_str()) ;
-        let src_path = Path::new(src.as_str()) ;
+        let dst_path     = Path::new(dst.as_str()) ;
+        let src_path     = Path::new(src.as_str()) ;
         debug!("dst {:?}", dst_path);
         debug!("src {:?}", src_path);
         if dst_path.exists() {

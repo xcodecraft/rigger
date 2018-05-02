@@ -5,7 +5,7 @@
 extern crate pretty_env_logger;
 extern crate rg_lib ;
 #[macro_use] extern crate rg_core ;
-#[macro_use] extern crate shells ;
+extern crate shells ;
 
 pub mod unix  ;
 pub mod service ;
