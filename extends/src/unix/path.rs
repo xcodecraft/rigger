@@ -20,7 +20,7 @@ impl ResLoader<Path> for Path
     fn load( data : &StrMap) -> Path
     {
         let dst = data.must_get(&String::from("dst")).clone() ;
-        Path{ src, dst} 
+        Path{ dst} 
     }
     fn key() -> String { String::from("Path") }
 }
@@ -49,12 +49,17 @@ impl InvokeHook for Path{
 impl InvokeStop for Path{
     fn res_clean(&self,context : &mut Context) ->BoolR 
     {
-        let dst : String = context.must_get("dst") ;
-        let dst_path     = Path::new(dst.as_str()) ;
-        if dst_path.exists() {
-            self.clear_link(dst_path) ?
+
+        let line: String = context.must_get("dst") ;
+        let dst_v: Vec<&str> = line.split(',').collect();
+        for dst in dst_v
+        {
+            let (code,stdout,stderr )= rg_sh!("rm -rf {}", dst ) ;
+            if code != 0 {
+                ERR!("{:?} {:?} ",stdout,stderr);
+            } 
         }
-        Ok(())
+        return Ok(()) ;
     }
 
 }
@@ -62,14 +67,6 @@ impl InvokeStop for Path{
 
 impl Path
 {
-    fn clear_path(&self,dst: &str) -> BoolR
-    {
-        let (code,stdout,stderr )= rg_sh!("rm -rf {}",dst);
-        if code != 0 {
-            ERR!("{:?} {:?} ",stdout,stderr);
-        } 
-        Ok(())
-    }
 }
 
 
@@ -101,19 +98,17 @@ mod tests
 {
     use super::* ;
     use std::env ;
-    use pretty_env_logger ;
     #[test]
-    fn creat_link()
+    fn creat_path()
     {
-        pretty_env_logger::init();
         let mut god = ResFatory::new() ;
         res_regist(&mut god);
-        let path = env::current_dir().unwrap();
+        let path  = env::current_dir().unwrap();
         let mut c = Context::new() ;
         c.set("CUR_DIR",path.into_os_string().into_string().unwrap());
         let data  = map!(
-            "dst" =>"${CUR_DIR}/meterial/run_ngx.yaml",
-            "src" =>"${CUR_DIR}/meterial/run_tpl.yaml") ;
+            "dist" =>"${CUR_DIR}/meterial/a,${CUR_DIR}/meterial/b",
+            );
         let obj   = god.create(&Path::key(),&data ).unwrap();
         res_check(&obj,c);
     }
