@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/xcodecraft/rigger.svg?branch=master)](https://travis-ci.org/xcodecraft/rigger)
-![Sonar Status](https://sonarcloud.io/api/project_badges/measure?project=rigger&metric=alert_status)
+![Sonar Status](https://sonarcloud.io/api/project_badges/measure?project=rigger&metric=alert_status)(https://sonarcloud.io/dashboard?id=rigger)
 # rigger	
 # 目标：
 rigger 是跨linux发行平台的程序平台，可以完成：
